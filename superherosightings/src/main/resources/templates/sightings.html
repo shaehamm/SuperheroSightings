@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Roboto&display=swap" rel="stylesheet">
+        <link th:href="@{/styles.css}" rel="stylesheet" type="text/css" />
+        <script src="https://kit.fontawesome.com/d8063e6350.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+
+        <!-- Main Body of Page -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col header">
+                    <h1>Sightings</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col m-3 link">
+                    <a class="btn badge-pill" href="/home"><i class="fas fa-home"></i></a>
+                </div>
+                <div class="col m-3 link">
+                    <a href="/heroes" class="btn badge-pill">Heroes</a>
+                </div>
+                <div class="col m-3 link">
+                    <a href="/quirks" class="btn badge-pill">Quirks</a>
+                </div>
+                <div class="col m-3 link">
+                    <a href="/orgs" class="btn badge-pill">Organizations</a>
+                </div>
+                <div class="col m-3 link">
+                    <a href="/sightings" class="btn badge-pill">Sightings</a>
+                </div>
+                <div class="col m-3 link">
+                    <a href="/locations" class="btn badge-pill">Locations</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-7 col-md">
+                    <h3>All Sightings</h3>
+                    <table>
+                        <tr>
+                            <th>Who</th>
+                            <th>When</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr th:each="sighting : ${sightings}">
+                            <td th:text="${sighting.hero.name}"></td>
+                            <td th:text="${'' + sighting.date}"></td>
+                            <td class="inlineLinkBlock">
+                                <a id="inlineLink" th:href="${'/sighting/' + sighting.id}">Details</a>
+                            </td>
+                            <td class="inlineLinkBlock">
+                                <a id="inlineLink" th:href="${'/deletesighting/' + sighting.id}">Delete</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-lg-5 col-md">
+                    <h3>Add Sighting</h3>
+                    <form action="addsighting" method="POST">
+                        <div class="form-group row">
+                            <label for="hero" class="col-3 col-form-label">
+                                Hero</label>
+                            <div class="col-9">
+                                <select id="hero" name="hero.id" class="form-control" >
+                                    <option th:each="hero : ${heroes}" 
+                                            th:value="${hero.id}" 
+                                            th:text="${hero.name}">
+                                        Hero Name</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="date" class="col-3 col-form-label">
+                                Date</label>
+                            <div class="col-9">
+                                <input type="text" name="date" 
+                                       id="date" class="form-control" 
+                                       placeholder="mm/dd/yyyy"/>
+                                <div th:if="${#fields.hasErrors('sighting.date')}">
+                                    <p th:each="error : ${#fields.errors('sighting.date')}" class="alert alert-danger"
+                                       th:text="${error}">Invalid Sighting Date</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="location" class="col-3 col-form-label">
+                                Location</label>
+                            <div class="col-9">
+                                <select id="location" name="location.id" class="form-control" >
+                                    <option th:each="location : ${locations}" 
+                                            th:value="${location.id}" 
+                                            th:text="${location.name}">
+                                        Location Name</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="description" class="col-3 col-form-label">
+                                Description</label>
+                            <div class="col-9">
+                                <input type="text" name="description" 
+                                       id="description" class="form-control" 
+                                       placeholder=""/>
+                                <div th:if="${#fields.hasErrors('sighting.description')}">
+                                    <p th:each="error : ${#fields.errors('sighting.description')}" class="alert alert-danger"
+                                       th:text="${error}">Invalid Description</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn badge-pill addButton">Add Sighting</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- End main body -->
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+</html>

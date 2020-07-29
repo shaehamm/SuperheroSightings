@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Roboto&display=swap" rel="stylesheet">
+        <link th:href="@{/styles.css}" rel="stylesheet" type="text/css" />
+        <script src="https://kit.fontawesome.com/d8063e6350.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <!-- Main Body of Page -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col header">
+                    <h1 th:text="${'About ' + validQuirk.name}"></h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col m-3 link">
+                    <a class="btn badge-pill" href="/home"><i class="fas fa-home"></i></a>
+                </div>
+                <div class="col m-3 link">
+                    <a href="/heroes" class="btn badge-pill">Heroes</a>
+                </div>
+                <div class="col m-3 link">
+                    <a href="/quirks" class="btn badge-pill">Quirks</a>
+                </div>
+                <div class="col m-3 link">
+                    <a href="/orgs" class="btn badge-pill">Organizations</a>
+                </div>
+                <div class="col m-3 link">
+                    <a href="/sightings" class="btn badge-pill">Sightings</a>
+                </div>
+                <div class="col m-3 link">
+                    <a href="/locations" class="btn badge-pill">Locations</a>
+                </div>
+            </div>      
+            <div class="row">
+                <div class="col-lg-6 col-md">
+                    <h3>The Specifics</h3>
+                    <table>
+                        <tr>
+                            <td th:text="${'Name: ' + validQuirk.name}"></td>
+                        </tr>
+                        <tr>
+                            <td th:text="${'Description: ' + validQuirk.description}"></td>
+                        </tr>
+                        <tr>
+                            <td>Hero(es) with this quirk </td>
+                            <td th:each="hero : ${heroes}">
+                                <span th:text="${hero.name + ' '}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="button" class="btn badge-pill editButton">Edit Quirk</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-lg-6 col-md emptyDiv"></div>
+                <div class="col-lg-6 col-md editForm">
+                    <h3>Edit Quirk</h3>
+                    <form action="/editquirk" method="POST">
+                        <div class="form-group row">
+                            <label for="name" class="col-3 col-form-label">
+                                Name</label>
+                            <div class="col-9">
+                                <input type="text" name="name" id="name" 
+                                       class="form-control" th:value="${validQuirk.name}"/>
+                                <div th:if="${#fields.hasErrors('quirk.name')}" class="errorDiv">
+                                    <p th:each="error : ${#fields.errors('quirk.name')}" class="alert alert-danger"
+                                       th:text="${error}">Invalid Quirk Name</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="description" class="col-3 col-form-label">
+                                Description</label>
+                            <div class="col-9">
+                                <input type="text" name="description" th:value="${validQuirk.description}"
+                                       id="description" class="form-control"/>
+                                <div th:if="${#fields.hasErrors('quirk.description')}" class="errorDiv">
+                                    <p th:each="error : ${#fields.errors('quirk.description')}" class="alert alert-danger"
+                                       th:text="${error}">Invalid Description</p>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" th:value="${validQuirk.id}" name="id"/>
+                        <button type="submit" class="btn badge-pill editButton">Confirm Edit</button>
+                    </form>
+                </div>
+            </div>
+        </div> 
+        <!-- End main body -->
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="/editform.js"></script>
+    </body>
+</html>

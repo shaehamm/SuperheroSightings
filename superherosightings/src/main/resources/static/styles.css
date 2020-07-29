@@ -1,0 +1,75 @@
+/* 
+    Created on : Jul 11, 2020, 4:42:58 PM
+    Author     : codedchai
+*/
+body {
+    background-color: whitesmoke;
+    color: black;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+.header {
+    background-color: black;
+    color: whitesmoke;
+    height: 100px;
+    text-align: center;
+    font-family: 'Bungee Inline', cursive;
+    padding: 30px 10px 20px 10px;
+}
+
+h3 {
+    background-color: black;
+    color: whitesmoke;
+    padding: 5px;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    text-align: left;
+    padding: 5px 20px 5px 20px;
+}
+
+.inlineLinkBlock {
+    width: 5%;
+}
+
+.link {
+    padding: 5px;
+    text-decoration: none;
+}
+
+.link a:hover {
+    background-color: black;
+    font-weight: bold;
+    color: white;
+}
+
+.link a:active {
+    text-decoration: none;
+}
+
+.addButton,
+.editButton {
+    border-color: grey;
+    background-color: white;
+    color: black;
+}
+
+#inlineLink {
+    color: grey;
+    text-decoration: none;
+}
+
+#inlineLink:hover {
+    color: black;
+}
+
+#inlineLink:active {
+    text-decoration: none;
+}
