@@ -51,7 +51,7 @@
                         </tr>
                         <tr th:each="org: ${orgs}">
                             <td th:text="${org.name}"></td>
-                            <td th:text="${'- ' + org.description}"></td>
+                            <td th:text="${org.description}"></td>
                             <td class="inlineLinkBlock">
                                 <a id="inlineLink" th:href="${'/org/' + org.id}">Details</a>
                             </td>
