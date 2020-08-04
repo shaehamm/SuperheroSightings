@@ -54,15 +54,17 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Organizations: </td>
-                            <td th:each="org : ${orgs}">
-                                <span th:text="${org.name + ' '}"></span>
+                            <td>Organizations:
+                            <ul th:each="org : ${orgs}">
+                                <li th:text="${org.name + ' '}"></li>
+                            </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td>Sightings: </td>
-                            <td th:each="sighting : ${sightings}">
-                                <span th:text="${sighting.date + ' ' + sighting.location.name}"></span>
+                            <td>Sightings:
+                            <ul th:each="sighting : ${sightings}">
+                                <li th:text="${sighting.date + ' - ' + sighting.location.name}"></li>
+                            </ul>
                             </td>
                         </tr>
                         <tr>

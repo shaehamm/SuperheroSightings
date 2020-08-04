@@ -57,9 +57,10 @@
                             <td th:text="${'Contact Information: ' + validOrg.contactInfo}"></td>
                         </tr>
                         <tr>
-                            <td>Associated Heroes: </td>
-                            <td th:each="hero: ${orgheroes}">
-                                <span th:text="${hero.name + ' '}"></span>
+                            <td>Associated Heroes:
+                            <ul th:each="hero: ${orgheroes}">
+                                <li th:text="${hero.name}"></li>
+                            </ul>
                             </td>
                         </tr>
                         <tr>

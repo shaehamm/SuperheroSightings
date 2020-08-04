@@ -54,9 +54,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Sightings </td>
-                            <td th:each="sight : ${sights}">
-                                <span th:text="${sight.date + ' ' + sight.hero.name}"></span>
+                            <td>Sightings:
+                            <ul th:each="sight : ${sights}">
+                                <li th:text="${sight.date + ' - ' + sight.hero.name}"></li>
+                            </ul>
                             </td>
                         </tr>
                         <tr>

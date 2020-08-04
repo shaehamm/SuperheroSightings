@@ -50,9 +50,10 @@
                             <td th:text="${'Description: ' + validQuirk.description}"></td>
                         </tr>
                         <tr>
-                            <td>Hero(es) with this quirk </td>
-                            <td th:each="hero : ${heroes}">
-                                <span th:text="${hero.name + ' '}"></span>
+                            <td>Hero(es) with this quirk:
+                            <ul th:each="hero : ${heroes}">
+                                <li th:text="${hero.name}"></li>
+                            </ul>
                             </td>
                         </tr>
                         <tr>
