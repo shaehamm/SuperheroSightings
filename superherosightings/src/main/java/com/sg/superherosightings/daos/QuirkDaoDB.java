@@ -38,7 +38,7 @@ public class QuirkDaoDB implements QuirkDao {
 
     @Override
     public List<Quirk> getAllQuirks() {
-        final String SELECT_ALL_QUIRKS = "SELECT * FROM Quirk";
+        final String SELECT_ALL_QUIRKS = "SELECT * FROM Quirk ORDER BY name";
         return jdbc.query(SELECT_ALL_QUIRKS, new QuirkMapper());
     }
 

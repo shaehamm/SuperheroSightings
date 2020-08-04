@@ -54,10 +54,10 @@
                             <td th:text="${quirk.name}"></td>
                             <td th:text="${quirk.description}"></td>
                             <td class="inlineLinkBlock">
-                                <a id="inlineLink" th:href="${'/quirk/' + quirk.id}">Details</a>
+                                <a class="inlineLink" th:href="${'/quirk/' + quirk.id}">Details</a>
                             </td>
                             <td class="inlineLinkBlock">
-                                <a id="inlineLink" th:href="${'/deletequirk/' + quirk.id}">Delete</a>
+                                <a class="inlineLink" th:href="${'/deletequirk/' + quirk.id}">Delete</a>
                             </td>
                         </tr>
                     </table>

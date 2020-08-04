@@ -42,7 +42,7 @@ public class LocationDaoDB implements LocationDao {
 
     @Override
     public List<Location> getAllLocations() {
-        final String SELECT_ALL_LOCATIONS = "SELECT * FROM Location";
+        final String SELECT_ALL_LOCATIONS = "SELECT * FROM Location ORDER BY name";
         return jdbc.query(SELECT_ALL_LOCATIONS, new LocationMapper());
     }
 

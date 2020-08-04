@@ -54,10 +54,10 @@
                             <td th:text="${sighting.hero.name}"></td>
                             <td th:text="${'' + sighting.date}"></td>
                             <td class="inlineLinkBlock">
-                                <a id="inlineLink" th:href="${'/sighting/' + sighting.id}">Details</a>
+                                <a class="inlineLink" th:href="${'/sighting/' + sighting.id}">Details</a>
                             </td>
                             <td class="inlineLinkBlock">
-                                <a id="inlineLink" th:href="${'/deletesighting/' + sighting.id}">Delete</a>
+                                <a class="inlineLink" th:href="${'/deletesighting/' + sighting.id}">Delete</a>
                             </td>
                         </tr>
                     </table>

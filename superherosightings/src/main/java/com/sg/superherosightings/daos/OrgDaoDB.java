@@ -45,7 +45,7 @@ public class OrgDaoDB implements OrgDao {
     @Override
     @Transactional
     public List<Org> getAllOrgs() {
-        final String SELECT_ALL_ORGS = "SELECT * FROM Org";
+        final String SELECT_ALL_ORGS = "SELECT * FROM Org ORDER BY name";
         List<Org> toReturn = jdbc.query(SELECT_ALL_ORGS, new OrgMapper());
         associateHeros(toReturn);
         return toReturn;

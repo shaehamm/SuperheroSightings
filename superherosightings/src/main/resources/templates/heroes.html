@@ -53,10 +53,10 @@
                             <td th:text="${hero.name}"></td>
                             <td th:text="${hero.quirk.name}"></td>
                             <td class="inlineLinkBlock">
-                                <a id="inlineLink" th:href="${'/hero/' + hero.id}">Details</a>
+                                <a class="inlineLink" th:href="${'/hero/' + hero.id}">Details</a>
                             </td>
                             <td class="inlineLinkBlock">
-                                <a id="inlineLink" th:href="${'/deletehero/' + hero.id}">Delete</a>
+                                <a class="inlineLink" th:href="${'/deletehero/' + hero.id}">Delete</a>
                             </td>
                         </tr>
                     </table>

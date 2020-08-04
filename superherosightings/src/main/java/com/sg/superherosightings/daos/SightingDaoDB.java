@@ -52,7 +52,7 @@ public class SightingDaoDB implements SightingDao {
     @Transactional
     public List<Sighting> getAllSightings() {
         List<Sighting> toReturn = new ArrayList<>();
-        final String SELECT_ALL_SIGHT = "SELECT * FROM Sighting";
+        final String SELECT_ALL_SIGHT = "SELECT * FROM Sighting ORDER BY date";
         try {
             toReturn = jdbc.query(SELECT_ALL_SIGHT, new SightingMapper());
             associateHeroAndLocation(toReturn);

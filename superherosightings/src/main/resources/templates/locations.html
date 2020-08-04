@@ -53,10 +53,10 @@
                             <td th:text="${location.name}"></td>
                             <td th:text="${location.address}"></td>
                             <td class="inlineLinkBlock">
-                                <a id="inlineLink" th:href="${'/location/' + location.id}">Details</a>
+                                <a class="inlineLink" th:href="${'/location/' + location.id}">Details</a>
                             </td>
                             <td class="inlineLinkBlock">
-                                <a id="inlineLink" th:href="${'/deletelocation/' + location.id}">Delete</a>
+                                <a class="inlineLink" th:href="${'/deletelocation/' + location.id}">Delete</a>
                             </td>
                         </tr>
                     </table>

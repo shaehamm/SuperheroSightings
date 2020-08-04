@@ -28,11 +28,11 @@ h3 {
 
 table {
     width: 100%;
+    text-align: left;
 }
 
-td {
-    text-align: left;
-    padding: 5px 20px 5px 20px;
+td, th {
+    padding: 5px 10px 5px 10px;
 }
 
 .inlineLinkBlock {
@@ -61,15 +61,15 @@ td {
     color: black;
 }
 
-#inlineLink {
+.inlineLink {
     color: grey;
     text-decoration: none;
 }
 
-#inlineLink:hover {
+.inlineLink:hover {
     color: black;
 }
 
-#inlineLink:active {
+.inlineLink:active {
     text-decoration: none;
 }
