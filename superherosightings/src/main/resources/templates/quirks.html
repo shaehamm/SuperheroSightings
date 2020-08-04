@@ -83,9 +83,8 @@
                             <label for="description" class="col-3 col-form-label">
                                 Description</label>
                             <div class="col-9">
-                                <input type="text" name="description" 
-                                       id="description" class="form-control" 
-                                       placeholder="What does it do?"/>
+                                <textarea name="description" class="form-control" placeholder="What does it do?"
+                                          maxlength="250" id="description"></textarea>
                                 <div th:if="${#fields.hasErrors('quirk.description')}">
                                     <p th:each="error : ${#fields.errors('quirk.description')}" class="alert alert-danger"
                                        th:text="${error}">Invalid Description</p>

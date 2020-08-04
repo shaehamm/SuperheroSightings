@@ -81,7 +81,7 @@
                             <label for="description" class="col-3 col-form-label">
                                 Description</label>
                             <div class="col-9">
-                                <textarea name="description" class="form-control"
+                                <textarea name="description" class="form-control" id="description"
                                           placeholder="" maxlength="250"></textarea>
                                 <div th:if="${#fields.hasErrors('org.description')}">
                                     <p th:each="error : ${#fields.errors('org.description')}" class="alert alert-danger"

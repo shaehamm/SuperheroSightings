@@ -106,9 +106,8 @@
                             <label for="description" class="col-3 col-form-label">
                                 Description</label>
                             <div class="col-9">
-                                <input type="text" name="description" 
-                                       id="description" class="form-control" 
-                                       placeholder=""/>
+                                <textarea name="description" class="form-control" placeholder=""
+                                          maxlength="250" id="description"></textarea>
                                 <div th:if="${#fields.hasErrors('sighting.description')}">
                                     <p th:each="error : ${#fields.errors('sighting.description')}" class="alert alert-danger"
                                        th:text="${error}">Invalid Description</p>
