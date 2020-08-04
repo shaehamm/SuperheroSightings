@@ -74,4 +74,17 @@ values
 
 insert into Sighting (`Date`, `Description`, LocationId, HeroId)
 values
-	('2020-03-14', 'Foresty area', 1, 1);
+	('2020-03-14', 'Walking around toward the evening, with a briefcase', 2, 2),
+    ('2020-03-11', 'Possible spotting of All For One in a black sedan with tinted windows', 1, 1),
+    ('2020-02-24', 'Was talking with someone, possibly All Might?', 11, 3),
+    ('2020-02-17', 'Seen flying around briefly outside', 12, 5),
+    ('2020-01-18', 'Was seen breifly before vanishing around an alleyway', 6, 7),
+    ('2020-01-13', 'Sitting at a table and eating dumplings', 7, 2),
+    ('2020-01-01', 'Waiting in line to get the special of the day', 7, 6),
+    ('2019-12-31', 'Window shopping, or maybe waiting for someone', 6, 11),
+    ('2019-11-19', 'Training by himself during the early morning', 9, 10),
+    ('2019-09-22', 'Seen near the school gates, maybe talking with a different student', 3, 8),
+    ('2019-08-26', 'Walking around by herself while listening to music', 4, 4),
+    ('2019-08-05', 'Practicing with some new gear during the morning', 9, 3),
+    ('2019-05-25', 'Walked out of the agency during the late evening', 8, 2),
+    ('2019-03-12', 'Seen walking into the agency around midday', 8, 9);
