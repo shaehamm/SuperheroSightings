@@ -81,9 +81,8 @@
                             <label for="description" class="col-3 col-form-label">
                                 Description</label>
                             <div class="col-9">
-                                <input type="text" name="description" 
-                                       id="description" class="form-control" 
-                                       placeholder=""/>
+                                <textarea name="description" class="form-control"
+                                          placeholder="" maxlength="250"></textarea>
                                 <div th:if="${#fields.hasErrors('org.description')}">
                                     <p th:each="error : ${#fields.errors('org.description')}" class="alert alert-danger"
                                        th:text="${error}">Invalid Organization Description</p>
@@ -120,7 +119,7 @@
                             <label for="members" class="col-3 col-form-label">
                                 Members</label>
                             <div class="col-9">
-                                <div th:each="hero: ${heroes}" name="members">
+                                <div th:each="hero: ${heroes}" name="members" id="members">
                                     <input name="heroIds" type="checkbox" th:value="${hero.id}"/>
                                     <span th:text="${hero.name}"></span>
                                 </div>

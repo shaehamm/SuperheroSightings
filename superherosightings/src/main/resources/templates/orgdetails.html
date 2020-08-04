@@ -90,8 +90,8 @@
                             <label for="description" class="col-3 col-form-label">
                                 Description</label>
                             <div class="col-9">
-                                <input type="text" name="description" th:value="${validOrg.description}"
-                                       id="description" class="form-control"/>
+                                <textarea name="description" class="form-control" th:field="${validOrg.description}"
+                                          maxlength="250" id="description"></textarea>
                                 <div th:if="${#fields.hasErrors('org.description')}" class="errorDiv">
                                     <p th:each="error : ${#fields.errors('org.description')}" class="alert alert-danger"
                                        th:text="${error}">Invalid Organization Description</p>

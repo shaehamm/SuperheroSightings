@@ -35,6 +35,10 @@ td, th {
     padding: 5px 10px 5px 10px;
 }
 
+li {
+    height: 10px;
+}
+
 .inlineLinkBlock {
     width: 5%;
 }
