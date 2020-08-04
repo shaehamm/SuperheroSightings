@@ -82,7 +82,7 @@
                                 Description</label>
                             <div class="col-9">
                                 <textarea name="description" class="form-control" id="description"
-                                          placeholder="" maxlength="250"></textarea>
+                                          placeholder="What does the organization do or stand for?" maxlength="250"></textarea>
                                 <div th:if="${#fields.hasErrors('org.description')}">
                                     <p th:each="error : ${#fields.errors('org.description')}" class="alert alert-danger"
                                        th:text="${error}">Invalid Organization Description</p>
@@ -119,10 +119,12 @@
                             <label for="members" class="col-3 col-form-label">
                                 Members</label>
                             <div class="col-9">
-                                <div th:each="hero: ${heroes}" name="members" id="members">
-                                    <input name="heroIds" type="checkbox" th:value="${hero.id}"/>
-                                    <span th:text="${hero.name}"></span>
-                                </div>
+                                <ul class="grid-checkbox">
+                                <li th:each="hero : ${heroes}" name="members" id="members">
+                                    <input name="heroIds" id="heroIds" type="checkbox" th:value="${hero.id}"/>
+                                    <label for="heroIds" th:text="${hero.name}"></label>
+                                </li>
+                                </ul>
                                 <div th:if="${#fields.hasErrors('org.heroes')}" class="errorDiv">
                                     <p th:each="error : ${#fields.errors('org.heroes')}" 
                                        class="alert alert-danger" th:text="${error}"> 

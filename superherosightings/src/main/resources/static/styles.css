@@ -39,6 +39,19 @@ li {
     height: 10px;
 }
 
+.grid-checkbox {
+    float: left;
+    text-align: left;
+    padding: 0px;
+}
+
+.grid-checkbox li {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 30px
+}
+
 .inlineLinkBlock {
     width: 5%;
 }
