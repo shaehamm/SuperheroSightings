@@ -126,12 +126,16 @@
                             <label for="members" class="col-3 col-form-label">
                                 Members</label>
                             <div class="col-9">
-                                <div th:each="hero: ${heroes}" name="members">
-                                    <input name="heroIds" type="checkbox" th:value="${hero.id}" 
-                                   th:checked="${validOrg.heroes.contains(hero)}"/>
-                                    <span th:text="${hero.name}"></span>
+                                <div class="row">
+                                    <ul class="grid-checkbox">
+                                        <li th:each="hero : ${heroes}" name="members" id="members">
+                                            <input name="heroIds" id="heroIds" type="checkbox" th:value="${hero.id}"
+                                                   th:checked="${validOrg.heroes.contains(hero)}"/>
+                                            <label for="heroIds" th:text="${hero.name}"></label>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div th:if="${#fields.hasErrors('org.heroes')}" class="errorDiv">
+                                <div th:if="${#fields.hasErrors('org.heroes')}" class="errorDiv row">
                                     <p th:each="error : ${#fields.errors('org.heroes')}" 
                                        class="alert alert-danger" th:text="${error}"> 
                                         Invalid Members </p>
