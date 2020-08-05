@@ -1,159 +1,179 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Roboto&display=swap" rel="stylesheet">
-        <link th:href="@{/styles.css}" rel="stylesheet" type="text/css" />
-        <script src="https://kit.fontawesome.com/d8063e6350.js" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        
-        <!-- Main Body of Page -->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col header">
-                    <h1 th:text="${'About ' + validOrg.name}"></h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col m-3 link">
-                    <a class="btn badge-pill" href="/home"><i class="fas fa-home"></i></a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/heroes" class="btn badge-pill">Heroes</a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/quirks" class="btn badge-pill">Quirks</a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/orgs" class="btn badge-pill">Organizations</a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/sightings" class="btn badge-pill">Sightings</a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/locations" class="btn badge-pill">Locations</a>
-                </div>
-            </div>      
-            <div class="row">
-                <div class="col-lg-6 col-md">
-                    <h3>The Specifics</h3>
-                    <table>
-                        <tr>
-                            <td th:text="${'Name: ' + validOrg.name}"></td>
-                        </tr>
-                        <tr>
-                            <td th:text="${'Description: ' + validOrg.description}"></td>
-                        </tr>
-                        <tr>
-                            <td th:text="${'Address: ' + validOrg.address}"></td>
-                        </tr>
-                        <tr>
-                            <td th:text="${'Contact Information: ' + validOrg.contactInfo}"></td>
-                        </tr>
-                        <tr>
-                            <td>Associated Heroes:
-                            <ul th:each="hero: ${orgheroes}">
-                                <li th:text="${hero.name}"></li>
-                            </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <button type="button" class="btn badge-pill editButton">Edit Organization</button>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="col-lg-6 col-md emptyDiv"></div>
-                <div class="col-lg-6 col-md editForm">
-                    <h3>Edit Organization</h3>
-                    <form action="/editorg" method="POST">
-                        <div class="form-group row">
-                            <label for="name" class="col-3 col-form-label">
-                                Name</label>
-                            <div class="col-9">
-                                <input type="text" name="name" id="name" 
-                                       class="form-control" th:value="${validOrg.name}"/>
-                                <div th:if="${#fields.hasErrors('org.name')}" class="errorDiv">
-                                    <p th:each="error : ${#fields.errors('org.name')}" class="alert alert-danger"
-                                       th:text="${error}">Invalid Organization Name</p>
-                                </div>
-                            </div>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Roboto&display=swap" rel="stylesheet">
+    <link th:href="@{/styles.css}" rel="stylesheet" type="text/css"/>
+    <script src="https://kit.fontawesome.com/d8063e6350.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- Main Body of Page -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col header">
+            <h1 th:text="${'About ' + validOrg.name}"></h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col m-3 link">
+            <a class="btn badge-pill" href="/home"><i class="fas fa-home"></i></a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/heroes" class="btn badge-pill">Heroes</a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/quirks" class="btn badge-pill">Quirks</a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/orgs" class="btn badge-pill">Organizations</a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/sightings" class="btn badge-pill">Sightings</a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/locations" class="btn badge-pill">Locations</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md">
+            <h3>The Specifics</h3>
+            <table>
+                <tr>
+                    <td>
+                        <span class="inlineHeader">Name: </span>
+                        <span th:text="${validOrg.name}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="inlineHeader">Description: </span>
+                        <span th:text="${validOrg.description}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="inlineHeader">Address: </span>
+                        <span th:text="${validOrg.address}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="inlineHeader">Contact Information: </span>
+                        <span th:text="${validOrg.contactInfo}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="inlineHeader">Associated Heroes: </span>
+                        <ul th:each="hero : ${orgheroes}">
+                            <li th:text="${hero.name}"></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" class="btn badge-pill editButton">Edit Organization</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-lg-6 col-md emptyDiv"></div>
+        <div class="col-lg-6 col-md editForm">
+            <h3>Edit Organization</h3>
+            <form action="/editorg" method="POST">
+                <div class="form-group row">
+                    <label for="name" class="col-3 col-form-label">
+                        Name</label>
+                    <div class="col-9">
+                        <input type="text" name="name" id="name"
+                               class="form-control" th:value="${validOrg.name}"/>
+                        <div th:if="${#fields.hasErrors('org.name')}" class="errorDiv">
+                            <p th:each="error : ${#fields.errors('org.name')}" class="alert alert-danger"
+                               th:text="${error}">Invalid Organization Name</p>
                         </div>
-                        <div class="form-group row">
-                            <label for="description" class="col-3 col-form-label">
-                                Description</label>
-                            <div class="col-9">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="description" class="col-3 col-form-label">
+                        Description</label>
+                    <div class="col-9">
                                 <textarea name="description" class="form-control" th:field="${validOrg.description}"
                                           maxlength="250" id="description"></textarea>
-                                <div th:if="${#fields.hasErrors('org.description')}" class="errorDiv">
-                                    <p th:each="error : ${#fields.errors('org.description')}" class="alert alert-danger"
-                                       th:text="${error}">Invalid Organization Description</p>
-                                </div>
-                            </div>
+                        <div th:if="${#fields.hasErrors('org.description')}" class="errorDiv">
+                            <p th:each="error : ${#fields.errors('org.description')}" class="alert alert-danger"
+                               th:text="${error}">Invalid Organization Description</p>
                         </div>
-                        <div class="form-group row">
-                            <label for="address" class="col-3 col-form-label">
-                                Address</label>
-                            <div class="col-9">
-                                <input type="text" name="address" th:value="${validOrg.address}"
-                                       id="address" class="form-control"/>
-                                <div th:if="${#fields.hasErrors('org.address')}" class="errorDiv">
-                                    <p th:each="error : ${#fields.errors('org.address')}" class="alert alert-danger"
-                                       th:text="${error}">Invalid Organization Address</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="contactInfo" class="col-3 col-form-label">
-                                Contact Information</label>
-                            <div class="col-9">
-                                <input type="text" name="contactInfo" th:value="${validOrg.contactInfo}"
-                                       id="contactInfo" class="form-control"/>
-                                <div th:if="${#fields.hasErrors('org.contactInfo')}" class="errorDiv">
-                                    <p th:each="error : ${#fields.errors('org.contactInfo')}" class="alert alert-danger"
-                                       th:text="${error}">Invalid Organization Contact Info</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="members" class="col-3 col-form-label">
-                                Members</label>
-                            <div class="col-9">
-                                <div class="row">
-                                    <ul class="grid-checkbox">
-                                        <li th:each="hero : ${heroes}" name="members" id="members">
-                                            <input name="heroIds" id="heroIds" type="checkbox" th:value="${hero.id}"
-                                                   th:checked="${validOrg.heroes.contains(hero)}"/>
-                                            <label for="heroIds" th:text="${hero.name}"></label>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div th:if="${#fields.hasErrors('org.heroes')}" class="errorDiv row">
-                                    <p th:each="error : ${#fields.errors('org.heroes')}" 
-                                       class="alert alert-danger" th:text="${error}"> 
-                                        Invalid Members </p>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" th:value="${validOrg.id}" name="id"/>
-                        <button type="submit" class="btn badge-pill editButton">Confirm Edit</button>
-                    </form>
+                    </div>
                 </div>
-            </div>
-        </div> 
-        <!-- End main body -->      
+                <div class="form-group row">
+                    <label for="address" class="col-3 col-form-label">
+                        Address</label>
+                    <div class="col-9">
+                        <input type="text" name="address" th:value="${validOrg.address}"
+                               id="address" class="form-control"/>
+                        <div th:if="${#fields.hasErrors('org.address')}" class="errorDiv">
+                            <p th:each="error : ${#fields.errors('org.address')}" class="alert alert-danger"
+                               th:text="${error}">Invalid Organization Address</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="contactInfo" class="col-3 col-form-label">
+                        Contact Information</label>
+                    <div class="col-9">
+                        <input type="text" name="contactInfo" th:value="${validOrg.contactInfo}"
+                               id="contactInfo" class="form-control"/>
+                        <div th:if="${#fields.hasErrors('org.contactInfo')}" class="errorDiv">
+                            <p th:each="error : ${#fields.errors('org.contactInfo')}" class="alert alert-danger"
+                               th:text="${error}">Invalid Organization Contact Info</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="members" class="col-3 col-form-label">
+                        Members</label>
+                    <div class="col-9">
+                        <div class="row">
+                            <ul class="grid-checkbox">
+                                <li th:each="hero : ${heroes}" name="members" id="members">
+                                    <input name="heroIds" id="heroIds" type="checkbox" th:value="${hero.id}"
+                                           th:checked="${validOrg.heroes.contains(hero)}"/>
+                                    <label for="heroIds" th:text="${hero.name}"></label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div th:if="${#fields.hasErrors('org.heroes')}" class="errorDiv row">
+                            <p th:each="error : ${#fields.errors('org.heroes')}"
+                               class="alert alert-danger" th:text="${error}">
+                                Invalid Members </p>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" th:value="${validOrg.id}" name="id"/>
+                <button type="submit" class="btn badge-pill editButton">Confirm Edit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End main body -->
 
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src="/editform.js"></script>
-    </body>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="/editform.js"></script>
+</body>
 </html>

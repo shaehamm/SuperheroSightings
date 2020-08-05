@@ -47,12 +47,14 @@
                         <tr>
                             <th>Who</th>
                             <th>When</th>
+                            <th>Where</th>
                             <th></th>
                             <th></th>
                         </tr>
                         <tr th:each="sighting : ${sightings}">
                             <td th:text="${sighting.hero.name}"></td>
                             <td th:text="${'' + sighting.date}"></td>
+                            <td th:text="${sighting.location.name}"></td>
                             <td class="inlineLinkBlock">
                                 <a class="inlineLink" th:href="${'/sighting/' + sighting.id}">Details</a>
                             </td>

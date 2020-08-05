@@ -35,7 +35,7 @@ values
 insert into Org (`Name`, `Description`, Address, ContactInfo)
 values
    	('Endeavor Agency', 'Agency headed by the No. 1 hero Endeavor.', 'Downtown, Japan', '555-3566'),
-    ('League of Villans', 'Organization for powerful villans.', 'Unknown', 'No info'),
+    ('League of Villains', 'Organization for powerful villains.', 'Unknown', 'No info'),
    	('Ryukyu Agency', 'Agency headed by the No. 3 hero Ryukyu.', 'Espa Avenue, Japan', '555-1098'),
     ('U.A. High School', 'Number one ranked school for heroics.', 'Musutafu, Japan', '555-4567');
  

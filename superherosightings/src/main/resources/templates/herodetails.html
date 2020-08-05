@@ -1,143 +1,165 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Roboto&display=swap" rel="stylesheet">
-        <link th:href="@{/styles.css}" rel="stylesheet" type="text/css" />
-        <script src="https://kit.fontawesome.com/d8063e6350.js" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <!-- Main Body of Page -->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col header">
-                    <h1 th:text="${'About ' + validHero.name}"></h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col m-3 link">
-                    <a class="btn badge-pill" href="/home"><i class="fas fa-home"></i></a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/heroes" class="btn badge-pill">Heroes</a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/quirks" class="btn badge-pill">Quirks</a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/orgs" class="btn badge-pill">Organizations</a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/sightings" class="btn badge-pill">Sightings</a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/locations" class="btn badge-pill">Locations</a>
-                </div>
-            </div>      
-            <div class="row">
-                <div class="col-lg-6 col-md">
-                    <h3>The Specifics</h3>
-                    <table>
-                        <tr>
-                            <td th:text="${'Name: ' + validHero.name}"></td>
-                        </tr>
-                        <tr>
-                            <td th:text="${'Alignment: ' + validHero.alignment}"></td>
-                        </tr>
-                        <tr>
-                            <td th:text="${'Quirk: ' + validHero.quirk.name + ' - ' + heroquirk.description}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Organizations:
-                            <ul th:each="org : ${orgs}">
-                                <li th:text="${org.name + ' '}"></li>
-                            </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Sightings:
-                            <ul th:each="sighting : ${sightings}">
-                                <li th:text="${sighting.date + ' - ' + sighting.location.name}"></li>
-                            </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <button type="button" class="btn badge-pill editButton">Edit Hero</button>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="col-lg-6 col-md emptyDiv"></div>
-                <div class="col-lg-6 col-md editForm">
-                    <h3>Edit Hero</h3>
-                    <form action="/edithero" method="POST">
-                        <div class="form-group row">
-                            <label for="name" class="col-3 col-form-label">
-                                Name</label>
-                            <div class="col-9">
-                                <input type="text" name="name" id="name" 
-                                       class="form-control" th:value="${validHero.name}"/>
-                                <div th:if="${#fields.hasErrors('hero.name')}" class="errorDiv">
-                                    <p th:each="error : ${#fields.errors('hero.name')}" class="alert alert-danger"
-                                       th:text="${error}">Invalid Hero Name</p>
-                                </div>
-                            </div>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Roboto&display=swap" rel="stylesheet">
+    <link th:href="@{/styles.css}" rel="stylesheet" type="text/css"/>
+    <script src="https://kit.fontawesome.com/d8063e6350.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- Main Body of Page -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col header">
+            <h1 th:text="${'About ' + validHero.name}"></h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col m-3 link">
+            <a class="btn badge-pill" href="/home"><i class="fas fa-home"></i></a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/heroes" class="btn badge-pill">Heroes</a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/quirks" class="btn badge-pill">Quirks</a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/orgs" class="btn badge-pill">Organizations</a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/sightings" class="btn badge-pill">Sightings</a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/locations" class="btn badge-pill">Locations</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md">
+            <h3>The Specifics</h3>
+            <table>
+                <tr>
+                    <td>
+                        <span class="inlineHeader">Name: </span>
+                        <span th:text="${validHero.name}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="inlineHeader">Alignment: </span>
+                        <span th:text="${validHero.alignment}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="inlineHeader">Quirk: </span>
+                        <span th:text="${validHero.quirk.name + ' - ' + heroquirk.description}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="inlineHeader">Organizations: </span>
+                        <ul th:each="org : ${orgs}">
+                            <li th:text="${org.name + ' '}"></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="inlineHeader">Sightings: </span>
+                        <ul th:each="sighting : ${sightings}">
+                            <li th:text="${sighting.date + ' - ' + sighting.location.name}"></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" class="btn badge-pill editButton">Edit Hero</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-lg-6 col-md emptyDiv"></div>
+        <div class="col-lg-6 col-md editForm">
+            <h3>Edit Hero</h3>
+            <form action="/edithero" method="POST">
+                <div class="form-group row">
+                    <label for="name" class="col-3 col-form-label">
+                        Name</label>
+                    <div class="col-9">
+                        <input type="text" name="name" id="name"
+                               class="form-control" th:value="${validHero.name}"/>
+                        <div th:if="${#fields.hasErrors('hero.name')}" class="errorDiv">
+                            <p th:each="error : ${#fields.errors('hero.name')}" class="alert alert-danger"
+                               th:text="${error}">Invalid Hero Name</p>
                         </div>
-                        <div class="form-group row">
-                            <label for="alignment" class="col-3 col-form-label">
-                                Alignment</label>
-                            <div class="col-9">
-                                <input type="text" name="alignment" th:value="${validHero.alignment}"
-                                       id="alignment" class="form-control"/>
-                                <div th:if="${#fields.hasErrors('hero.alignment')}" class="errorDiv">
-                                    <p th:each="error : ${#fields.errors('hero.alignment')}" class="alert alert-danger"
-                                       th:text="${error}">Invalid Alignment</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="quirk" class="col-3 col-form-label">
-                                Quirk</label>
-                            <div class="col-9">
-                                <select id="quirk" name="quirk.id" class="form-control" >
-                                    <option th:each="quirk: ${quirks}" 
-                                            th:selected="${quirk.id == validHero.quirk.id}"
-                                            th:value="${quirk.id}" 
-                                            th:text="${quirk.name}"/>
-                                    Quirk Name</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="org" class="col-3 col-form-label">
-                                Organization</label>
-                            <div class="col-9">
-                                <div th:each="aOrg : ${allOrgs}" name="orgs">
-                                    <input name="orgIds" type="checkbox" th:value="${aOrg.id}" 
-                                   th:checked="${orgs.contains(aOrg)}"/>
-                                    <span th:text="${aOrg.name}"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" th:value="${validHero.id}" name="id"/>
-                        <button type="submit" class="btn badge-pill editButton">Confirm Edit</button>
-                    </form>
+                    </div>
                 </div>
-            </div>
-        </div> 
-        <!-- End main body -->
+                <div class="form-group row">
+                    <label for="alignment" class="col-3 col-form-label">
+                        Alignment</label>
+                    <div class="col-9">
+                        <input type="text" name="alignment" th:value="${validHero.alignment}"
+                               id="alignment" class="form-control"/>
+                        <div th:if="${#fields.hasErrors('hero.alignment')}" class="errorDiv">
+                            <p th:each="error : ${#fields.errors('hero.alignment')}" class="alert alert-danger"
+                               th:text="${error}">Invalid Alignment</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="quirk" class="col-3 col-form-label">
+                        Quirk</label>
+                    <div class="col-9">
+                        <select id="quirk" name="quirk.id" class="form-control">
+                            <option th:each="quirk: ${quirks}"
+                                    th:selected="${quirk.id == validHero.quirk.id}"
+                                    th:value="${quirk.id}"
+                                    th:text="${quirk.name}"/>
+                            Quirk Name</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="org" class="col-3 col-form-label">
+                        Organization</label>
+                    <div class="col-9">
 
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src="/editform.js"></script>
-    </body>
+                        <div class="row">
+                            <ul class="grid-checkbox">
+                                <li th:each="aOrg : ${allOrgs}" name="orgs" id="org">
+                                    <input name="orgIds" type="checkbox" th:value="${aOrg.id}"
+                                           th:checked="${orgs.contains(aOrg)}" id="orgIds"/>
+                                    <label for="orgIds" th:text="${aOrg.name}"></label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" th:value="${validHero.id}" name="id"/>
+                <button type="submit" class="btn badge-pill editButton">Confirm Edit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End main body -->
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="/editform.js"></script>
+</body>
 </html>
