@@ -1,91 +1,101 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Roboto&display=swap" rel="stylesheet">
-        <link th:href="@{/styles.css}" rel="stylesheet" type="text/css" />
-        <script src="https://kit.fontawesome.com/d8063e6350.js" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <!-- Main Body of Page -->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col header">
-                    <h1>Hero Sightings</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col m-3 link">
-                    <a class="btn badge-pill" href="/home"><i class="fas fa-home"></i></a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/heroes" class="btn badge-pill">Heroes</a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/quirks" class="btn badge-pill">Quirks</a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/orgs" class="btn badge-pill">Organizations</a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/sightings" class="btn badge-pill">Sightings</a>
-                </div>
-                <div class="col m-3 link">
-                    <a href="/locations" class="btn badge-pill">Locations</a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-5 col-md">
-                    <h3>Latest Sightings</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Hero</th>
-                                <th>Location</th>
-                            </tr>
-                        </thead>
-                        <tbody class="col">
-                            <tr th:each="sight: ${sightings}">
-                                <td th:text="${'' + sight.date}"></td>
-                                <td th:text="${sight.hero.name}"></td>
-                                <td th:text="${sight.location.name}"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div id="description" class="col-lg-7 col-md">
-                    <h3>About</h3>
-                    <p text-align="justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam euismod
-                        quam a elit rutrum tristique porttitor vel ante. Ut porta erat quam. Cras elit nunc, maximus nec
-                        condimentum et, venenatis et ante. Sed venenatis convallis turpis non egestas. In risus urna,
-                        facilisis a lacus eu, pulvinar commodo erat. Phasellus suscipit lorem sed tortor finibus, ut
-                        sollicitudin risus accumsan. Proin tempor est quis pulvinar condimentum. Suspendisse interdum
-                        tortor sit amet nunc posuere consequat. Aenean scelerisque non nisl non accumsan. Nulla
-                        vulputate quis ex a rhoncus. Quisque vestibulum dolor nec egestas pellentesque.
-                    </p>
-                    <p>Donec vehicula semper vestibulum. Praesent aliquam a ante a convallis. Duis pulvinar sagittis
-                        ullamcorper. Suspendisse quis velit in nunc sagittis volutpat. Nunc et scelerisque libero.
-                        Quisque sem urna, consectetur vitae laoreet eget, sodales quis turpis. Sed eget ex sit amet
-                        nulla finibus fermentum sit amet eget dolor. Morbi sed arcu sit amet enim tincidunt consectetur.
-                        Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur
-                        felis mi, convallis vel vestibulum sit amet, molestie ut velit. Cras risus ligula, finibus sit
-                        amet fringilla sed, sagittis in est. Praesent felis mi, imperdiet ut odio vel, bibendum blandit
-                        arcu.
-                    </p>
-                </div>
-            </div>
-        </div>  
-        <!-- End main body -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Roboto&display=swap" rel="stylesheet">
+    <link th:href="@{/styles.css}" rel="stylesheet" type="text/css"/>
+    <script src="https://kit.fontawesome.com/d8063e6350.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- Main Body of Page -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col header">
+            <h1>Hero Sightings</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col m-3 link">
+            <a class="btn badge-pill" href="/home"><i class="fas fa-home"></i></a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/heroes" class="btn badge-pill">Heroes</a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/quirks" class="btn badge-pill">Quirks</a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/orgs" class="btn badge-pill">Organizations</a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/sightings" class="btn badge-pill">Sightings</a>
+        </div>
+        <div class="col m-3 link">
+            <a href="/locations" class="btn badge-pill">Locations</a>
+        </div>
+    </div>
+    <div class="row main-content">
+        <div class="col-lg-5 col-md">
+            <h3>Latest Sightings</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Hero</th>
+                    <th>Location</th>
+                </tr>
+                </thead>
+                <tbody class="col">
+                <tr th:each="sight: ${sightings}">
+                    <td th:text="${'' + sight.date}"></td>
+                    <td th:text="${sight.hero.name}"></td>
+                    <td th:text="${sight.location.name}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="description" class="col-lg-7 col-md">
+            <h3>About</h3>
+            <p text-align="justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam euismod
+                quam a elit rutrum tristique porttitor vel ante. Ut porta erat quam. Cras elit nunc, maximus nec
+                condimentum et, venenatis et ante. Sed venenatis convallis turpis non egestas. In risus urna,
+                facilisis a lacus eu, pulvinar commodo erat. Phasellus suscipit lorem sed tortor finibus, ut
+                sollicitudin risus accumsan. Proin tempor est quis pulvinar condimentum. Suspendisse interdum
+                tortor sit amet nunc posuere consequat. Aenean scelerisque non nisl non accumsan. Nulla
+                vulputate quis ex a rhoncus. Quisque vestibulum dolor nec egestas pellentesque.
+            </p>
+            <p>Donec vehicula semper vestibulum. Praesent aliquam a ante a convallis. Duis pulvinar sagittis
+                ullamcorper. Suspendisse quis velit in nunc sagittis volutpat. Nunc et scelerisque libero.
+                Quisque sem urna, consectetur vitae laoreet eget, sodales quis turpis. Sed eget ex sit amet
+                nulla finibus fermentum sit amet eget dolor. Morbi sed arcu sit amet enim tincidunt consectetur.
+                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur
+                felis mi, convallis vel vestibulum sit amet, molestie ut velit. Cras risus ligula, finibus sit
+                amet fringilla sed, sagittis in est. Praesent felis mi, imperdiet ut odio vel, bibendum blandit
+                arcu.
+            </p>
+        </div>
+    </div>
+    <footer>
+        <span>Shae Hamm - Based off of My Hero Academia</span>
+    </footer>
+</div>
+<!-- End main body -->
 
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    </body>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
 </html>
