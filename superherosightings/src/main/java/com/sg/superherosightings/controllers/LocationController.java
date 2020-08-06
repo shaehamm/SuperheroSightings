@@ -5,14 +5,9 @@
  */
 package com.sg.superherosightings.controllers;
 
-import com.sg.superherosightings.daos.HeroDao;
-import com.sg.superherosightings.daos.LocationDao;
-import com.sg.superherosightings.daos.OrgDao;
-import com.sg.superherosightings.daos.QuirkDao;
-import com.sg.superherosightings.daos.SightingDao;
+import com.sg.superherosightings.daos.*;
 import com.sg.superherosightings.dtos.Location;
 import com.sg.superherosightings.exceptions.NullLocationDataException;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +17,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+
 /**
- *
  * @author codedchai
  */
 @Controller
@@ -53,6 +49,7 @@ public class LocationController {
 
     @PostMapping("addlocation")
     public String addLocation(@Valid Location toAdd, BindingResult valResult, Model mdl) throws NullLocationDataException {
+        //check if location name is unique
         if (locationDao.getAllLocations().stream().anyMatch(location -> location.getName().equalsIgnoreCase(toAdd.getName()))) {
             FieldError error = new FieldError("location", "name",
                     "Location already exists.");
@@ -78,8 +75,9 @@ public class LocationController {
 
     @PostMapping("editlocation")
     public String editLocation(@Valid Location edited, BindingResult valResult, Model mdl) throws NullLocationDataException {
-        if (locationDao.getAllLocations().stream().anyMatch(location -> 
-                location.getName().equalsIgnoreCase(edited.getName()) && 
+        //check if location name is unique
+        if (locationDao.getAllLocations().stream().anyMatch(location ->
+                location.getName().equalsIgnoreCase(edited.getName()) &&
                         location.getId() != edited.getId())) {
             FieldError error = new FieldError("location", "name",
                     "Location already exists.");

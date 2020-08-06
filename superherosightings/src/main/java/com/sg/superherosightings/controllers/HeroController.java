@@ -5,15 +5,10 @@
  */
 package com.sg.superherosightings.controllers;
 
-import com.sg.superherosightings.daos.HeroDao;
-import com.sg.superherosightings.daos.LocationDao;
-import com.sg.superherosightings.daos.OrgDao;
-import com.sg.superherosightings.daos.QuirkDao;
-import com.sg.superherosightings.daos.SightingDao;
+import com.sg.superherosightings.daos.*;
 import com.sg.superherosightings.dtos.Hero;
 import com.sg.superherosightings.dtos.Org;
 import com.sg.superherosightings.exceptions.NullHeroDataException;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +18,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+
 /**
- *
  * @author codedchai
  */
 @Controller
@@ -55,6 +51,7 @@ public class HeroController {
 
     @PostMapping("addhero")
     public String addHero(@Valid Hero toAdd, BindingResult valResult, Model mdl) throws NullHeroDataException {
+        //check if hero name is unique
         if (heroDao.getAllHeroes().stream().anyMatch(hero -> hero.getName().equalsIgnoreCase(toAdd.getName()))) {
             FieldError error = new FieldError("hero", "name",
                     "Hero name already exists.");
@@ -86,8 +83,9 @@ public class HeroController {
     @PostMapping("edithero")
     public String editHero(@Valid Hero edited, BindingResult valResult, Integer[] orgIds, Model mdl) throws NullHeroDataException {
         edited.setQuirk(quirkDao.getQuirkById(edited.getQuirk().getId()));
-        if (heroDao.getAllHeroes().stream().anyMatch(hero -> 
-                hero.getName().equalsIgnoreCase(edited.getName()) && 
+        //check if hero name is unique
+        if (heroDao.getAllHeroes().stream().anyMatch(hero ->
+                hero.getName().equalsIgnoreCase(edited.getName()) &&
                         hero.getId() != edited.getId())) {
             FieldError error = new FieldError("hero", "name",
                     "Hero name already exists.");
@@ -106,6 +104,7 @@ public class HeroController {
         }
         for (Integer orgId : orgIds) {
             Org toUpdate = orgDao.getOrgById(orgId);
+            //check if hero is added to org already (add new hero if not already a member)
             if (toUpdate.getHeroes().stream().allMatch(hero -> hero.getId() != edited.getId())) {
                 toUpdate.getHeroes().add(edited);
             }

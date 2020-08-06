@@ -5,17 +5,10 @@
  */
 package com.sg.superherosightings.controllers;
 
-import com.sg.superherosightings.daos.HeroDao;
-import com.sg.superherosightings.daos.LocationDao;
-import com.sg.superherosightings.daos.OrgDao;
-import com.sg.superherosightings.daos.QuirkDao;
-import com.sg.superherosightings.daos.SightingDao;
+import com.sg.superherosightings.daos.*;
 import com.sg.superherosightings.dtos.Hero;
 import com.sg.superherosightings.dtos.Org;
 import com.sg.superherosightings.exceptions.NullOrganizationDataException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +18,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- *
  * @author codedchai
  */
 @Controller
@@ -58,6 +54,7 @@ public class OrgController {
     @PostMapping("addorg")
     public String addOrg(@Valid Org toAdd, BindingResult valResult, Integer[] heroIds, Model mdl) {
         List<Hero> heroes = new ArrayList<>();
+        //add heroes or create error if no heroes selected
         if (heroIds != null) {
             for (Integer id : heroIds) {
                 heroes.add(heroDao.getHeroById(id));
@@ -68,6 +65,7 @@ public class OrgController {
             valResult.addError(error);
         }
         toAdd.setHeroes(heroes);
+        //check if org name is unique
         if (orgDao.getAllOrgs().stream().anyMatch(org -> org.getName().equalsIgnoreCase(toAdd.getName()))) {
             FieldError error = new FieldError("org", "name",
                     "Organization already exists.");
@@ -96,6 +94,7 @@ public class OrgController {
     @PostMapping("editorg")
     public String editOrg(@Valid Org edited, BindingResult valResult, Integer[] heroIds, Model mdl) throws NullOrganizationDataException {
         List<Hero> toAdd = new ArrayList<>();
+        //add heroes or create error if no heroes selected
         if (heroIds != null) {
             for (Integer id : heroIds) {
                 toAdd.add(heroDao.getHeroById(id));
@@ -106,8 +105,9 @@ public class OrgController {
             valResult.addError(error);
         }
         edited.setHeroes(toAdd);
-        if (orgDao.getAllOrgs().stream().anyMatch(org -> 
-                org.getName().equalsIgnoreCase(edited.getName()) && 
+        //check if org name is unique
+        if (orgDao.getAllOrgs().stream().anyMatch(org ->
+                org.getName().equalsIgnoreCase(edited.getName()) &&
                         org.getId() != edited.getId())) {
             FieldError error = new FieldError("org", "name",
                     "Organization already exists.");

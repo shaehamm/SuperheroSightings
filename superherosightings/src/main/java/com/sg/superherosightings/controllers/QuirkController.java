@@ -5,14 +5,9 @@
  */
 package com.sg.superherosightings.controllers;
 
-import com.sg.superherosightings.daos.HeroDao;
-import com.sg.superherosightings.daos.LocationDao;
-import com.sg.superherosightings.daos.OrgDao;
-import com.sg.superherosightings.daos.QuirkDao;
-import com.sg.superherosightings.daos.SightingDao;
+import com.sg.superherosightings.daos.*;
 import com.sg.superherosightings.dtos.Quirk;
 import com.sg.superherosightings.exceptions.NullQuirkDataException;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +17,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+
 /**
- *
  * @author codedchai
  */
 @Controller
@@ -53,6 +49,7 @@ public class QuirkController {
 
     @PostMapping("addquirk")
     public String addQuirk(@Valid Quirk toAdd, BindingResult valResult, Model mdl) {
+        //check if quirk name is unique
         if (quirkDao.getAllQuirks().stream().anyMatch(quirk -> quirk.getName().equalsIgnoreCase(toAdd.getName()))) {
             FieldError error = new FieldError("quirk", "name",
                     "Quirk name already exists.");
@@ -78,8 +75,9 @@ public class QuirkController {
 
     @PostMapping("editquirk")
     public String editQuirk(@Valid Quirk edited, BindingResult valResult, Model mdl) throws NullQuirkDataException {
-        if (quirkDao.getAllQuirks().stream().anyMatch(quirk -> 
-                quirk.getName().equalsIgnoreCase(edited.getName()) && 
+        //check if quirk name is unique
+        if (quirkDao.getAllQuirks().stream().anyMatch(quirk ->
+                quirk.getName().equalsIgnoreCase(edited.getName()) &&
                         quirk.getId() != edited.getId())) {
             FieldError error = new FieldError("quirk", "name",
                     "Quirk name already exists.");
