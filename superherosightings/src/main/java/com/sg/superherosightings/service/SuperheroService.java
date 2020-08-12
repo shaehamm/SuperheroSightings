@@ -5,6 +5,7 @@ import com.sg.superherosightings.dtos.*;
 import com.sg.superherosightings.exceptions.NullHeroDataException;
 import com.sg.superherosightings.exceptions.NullLocationDataException;
 import com.sg.superherosightings.exceptions.NullOrganizationDataException;
+import com.sg.superherosightings.exceptions.NullQuirkDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -200,5 +201,57 @@ public class SuperheroService {
                     "Organization already exists.");
             valResult.addError(error);
         }
+    }
+
+    public List<Hero> getHeroesForQuirk(Quirk quirk) throws NullQuirkDataException {
+        return heroDao.getHeroesForQuirk(quirk);
+    }
+
+    public void deleteQuirkById(Integer id) {
+        quirkDao.deleteQuirkById(id);
+    }
+
+    public void updateQuirk(Quirk edited) {
+        quirkDao.updateQuirk(edited);
+    }
+
+    public void addQuirk(Quirk toAdd) {
+        quirkDao.addQuirk(toAdd);
+    }
+
+    public void uniqueQuirkNameCheck(String name, BindingResult valResult) {
+        if (getAllQuirks().stream().anyMatch(quirk -> quirk.getName().equalsIgnoreCase(name))) {
+            FieldError error = new FieldError("quirk", "name",
+                    "Quirk name already exists.");
+            valResult.addError(error);
+        }
+    }
+
+    public void uniqueQuirkNameCheck(String name, int id, BindingResult valResult) {
+        if (getAllQuirks().stream().anyMatch(quirk -> quirk.getName().equalsIgnoreCase(name) && quirk.getId() != id)) {
+            FieldError error = new FieldError("quirk", "name",
+                    "Quirk name already exists.");
+            valResult.addError(error);
+        }
+    }
+
+    public List<Sighting> getAllSightings() {
+        return sightDao.getAllSightings();
+    }
+
+    public void addSighting(Sighting toAdd) {
+        sightDao.addSighting(toAdd);
+    }
+
+    public Sighting getSightingById(Integer id) {
+        return sightDao.getSightingById(id);
+    }
+
+    public void updateSighting(Sighting edited) {
+        sightDao.updateSighting(edited);
+    }
+
+    public void deleteSightingById(Integer id) {
+        sightDao.deleteSightingById(id);
     }
 }
