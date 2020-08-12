@@ -4,11 +4,13 @@ import com.sg.superherosightings.daos.*;
 import com.sg.superherosightings.dtos.*;
 import com.sg.superherosightings.exceptions.NullHeroDataException;
 import com.sg.superherosightings.exceptions.NullLocationDataException;
+import com.sg.superherosightings.exceptions.NullOrganizationDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -150,6 +152,52 @@ public class SuperheroService {
                 location.getId() != id)) {
             FieldError error = new FieldError("location", "name",
                     "Location already exists.");
+            valResult.addError(error);
+        }
+    }
+
+    public List<Sighting> getLatestSightings(int count) {
+        return sightDao.getLatestSightings(count);
+    }
+
+    public void addOrg(Org toAdd) {
+        orgDao.addOrg(toAdd);
+    }
+
+    public List<Hero> getHeroesForOrg(Org org) throws NullOrganizationDataException {
+        return heroDao.getHeroesForOrg(org);
+    }
+
+    public void deleteOrgById(Integer id) {
+        orgDao.deleteOrgById(id);
+    }
+
+    public List<Hero> selectedHeroCheck(Integer[] heroIds, BindingResult valResult) {
+        List<Hero> toReturn = new ArrayList<>();
+        if (heroIds != null) {
+            for (Integer id : heroIds) {
+                toReturn.add(getHeroById(id));
+            }
+        } else {
+            FieldError error = new FieldError("org", "heroes",
+                    "Must include one hero.");
+            valResult.addError(error);
+        }
+        return toReturn;
+    }
+
+    public void uniqueOrgNameCheck(String name, BindingResult valResult) {
+        if (getAllOrgs().stream().anyMatch(org -> org.getName().equalsIgnoreCase(name))) {
+            FieldError error = new FieldError("org", "name",
+                    "Organization already exists.");
+            valResult.addError(error);
+        }
+    }
+
+    public void uniqueOrgNameCheck(String name, int id, BindingResult valResult) {
+        if (getAllOrgs().stream().anyMatch(org -> org.getName().equalsIgnoreCase(name) && org.getId() != id)) {
+            FieldError error = new FieldError("org", "name",
+                    "Organization already exists.");
             valResult.addError(error);
         }
     }

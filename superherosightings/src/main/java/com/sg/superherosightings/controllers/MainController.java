@@ -5,26 +5,25 @@
  */
 package com.sg.superherosightings.controllers;
 
-import com.sg.superherosightings.daos.SightingDao;
+import com.sg.superherosightings.service.SuperheroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- *
  * @author codedchai
  */
 @Controller
 public class MainController {
     
     @Autowired
-    SightingDao sight;
-    
+    SuperheroService service;
+
     @GetMapping("home")
     public String homePage(Model mdl) {
-        mdl.addAttribute("sightings", sight.getLatestSightings(10));
+        mdl.addAttribute("sightings", service.getLatestSightings(10));
         return "home";
     }
-    
+
 }
