@@ -3,6 +3,7 @@ package com.sg.superherosightings.service;
 import com.sg.superherosightings.daos.*;
 import com.sg.superherosightings.dtos.*;
 import com.sg.superherosightings.exceptions.NullHeroDataException;
+import com.sg.superherosightings.exceptions.NullLocationDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -113,6 +114,43 @@ public class SuperheroService {
                 toUpdate.getHeroes().add(edited);
             }
             updateOrg(toUpdate);
+        }
+    }
+
+    public void addLocation(Location toAdd) throws NullLocationDataException {
+        locationDao.addLocation(toAdd);
+    }
+
+    public Location getLocationById(Integer id) {
+        return locationDao.getLocationById(id);
+    }
+
+    public List<Sighting> getSightingsByLocation(Location location) {
+        return sightDao.getSightingsByLocation(location);
+    }
+
+    public void updateLocation(Location location) throws NullLocationDataException {
+        locationDao.updateLocation(location);
+    }
+
+    public void deleteLocationById(Integer id) {
+        locationDao.deleteLocationById(id);
+    }
+
+    public void uniqueLocationNameCheck(String name, BindingResult valResult) {
+        if (getAllLocations().stream().anyMatch(location -> location.getName().equalsIgnoreCase(name))) {
+            FieldError error = new FieldError("location", "name",
+                    "Location already exists.");
+            valResult.addError(error);
+        }
+    }
+
+    public void uniqueLocationNameCheck(String name, int id, BindingResult valResult) {
+        if (getAllLocations().stream().anyMatch(location -> location.getName().equalsIgnoreCase(name) &&
+                location.getId() != id)) {
+            FieldError error = new FieldError("location", "name",
+                    "Location already exists.");
+            valResult.addError(error);
         }
     }
 }
