@@ -9,9 +9,6 @@ import com.sg.superherosightings.daos.HeroDaoDB.HeroMapper;
 import com.sg.superherosightings.dtos.Hero;
 import com.sg.superherosightings.dtos.Org;
 import com.sg.superherosightings.dtos.Quirk;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,8 +16,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
 /**
- *
  * @author codedchai
  */
 @Repository
@@ -73,7 +73,7 @@ public class OrgDaoDB implements OrgDao {
     public void updateOrg(Org org) {
         final String UPDATE_ORG = "UPDATE Org SET Name = ?, Description = ?, "
                 + "Address = ?, ContactInfo = ? WHERE Id = ?";
-        jdbc.update(UPDATE_ORG, 
+        jdbc.update(UPDATE_ORG,
                 org.getName(),
                 org.getDescription(),
                 org.getAddress(),
@@ -95,12 +95,12 @@ public class OrgDaoDB implements OrgDao {
 
     @Override
     @Transactional
-    public List<Org> getOrgsForHero(Hero hero) {
+    public List<Org> getOrgsForHero(int heroId) {
         final String SELECT_ORGS_FOR_HERO = "SELECT Org.* FROM Org "
                 + "JOIN HeroOrg h ON Org.Id = h.OrgId "
                 + "JOIN Hero ON h.HeroId = Hero.Id WHERE Hero.Id = ?";
-        List<Org> toReturn = jdbc.query(SELECT_ORGS_FOR_HERO, new OrgMapper(), 
-                hero.getId());
+        List<Org> toReturn = jdbc.query(SELECT_ORGS_FOR_HERO, new OrgMapper(),
+                heroId);
         associateHeros(toReturn);
         return toReturn;
 
@@ -117,11 +117,11 @@ public class OrgDaoDB implements OrgDao {
     private void insertHeroOrg(Org org) {
         final String INSERT_HERO_ORG = "INSERT INTO HeroOrg (HeroId, OrgId) "
                 + "VALUES (?,?)";
-        for (Hero hero: org.getHeroes()) {
+        for (Hero hero : org.getHeroes()) {
             jdbc.update(INSERT_HERO_ORG, hero.getId(), org.getId());
         }
     }
-    
+
     private Quirk getQuirkForHero(int id) {
         final String SELECT_QUIRK_FOR_HERO = "SELECT Quirk.* FROM Quirk JOIN "
                 + "Hero ON Hero.QuirkId = Quirk.Id WHERE Hero.Id = ?";
@@ -129,13 +129,13 @@ public class OrgDaoDB implements OrgDao {
     }
 
     public void associateQuirk(List<Hero> heros) {
-        for (Hero hero: heros) {
+        for (Hero hero : heros) {
             hero.setQuirk(getQuirkForHero(hero.getId()));
         }
     }
 
     private void associateHeros(List<Org> orgs) {
-        for (Org org: orgs) {
+        for (Org org : orgs) {
             org.setHeroes(getHerosForOrg(org.getId()));
         }
     }

@@ -6,20 +6,17 @@
 package com.sg.superherosightings.controllers;
 
 import com.sg.superherosightings.dtos.Hero;
-import com.sg.superherosightings.dtos.Org;
 import com.sg.superherosightings.exceptions.NullHeroDataException;
 import com.sg.superherosightings.service.SuperheroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 
 /**
  * @author codedchai
@@ -40,12 +37,8 @@ public class HeroController {
 
     @PostMapping("addhero")
     public String addHero(@Valid Hero toAdd, BindingResult valResult, Model mdl) throws NullHeroDataException {
-        //check if hero name is unique
-        if (service.getAllHeroes().stream().anyMatch(hero -> hero.getName().equalsIgnoreCase(toAdd.getName()))) {
-            FieldError error = new FieldError("hero", "name",
-                    "Hero name already exists.");
-            valResult.addError(error);
-        }
+        //check if hero name is unique, adds error if not
+        service.uniqueHeroNameCheck(toAdd.getName(), valResult);
         if (valResult.hasErrors()) {
             mdl.addAttribute("hero", toAdd);
             mdl.addAttribute("heroes", service.getAllHeroes());
@@ -63,7 +56,7 @@ public class HeroController {
         mdl.addAttribute("validHero", hero);
         mdl.addAttribute("heroquirk", hero.getQuirk());
         mdl.addAttribute("quirks", service.getAllQuirks());
-        mdl.addAttribute("orgs", service.getOrgsForHero(hero));
+        mdl.addAttribute("orgs", service.getOrgsForHero(hero.getId()));
         mdl.addAttribute("allOrgs", service.getAllOrgs());
         mdl.addAttribute("sightings", service.getSightingsForHero(hero));
         return "herodetails";
@@ -71,41 +64,23 @@ public class HeroController {
 
     @PostMapping("edithero")
     public String editHero(@Valid Hero edited, BindingResult valResult, Integer[] orgIds, Model mdl) throws NullHeroDataException {
+        //add completed quirk info to the edited hero
         edited.setQuirk(service.getQuirkById(edited.getQuirk().getId()));
         Hero hero = service.getHeroById(edited.getId());
         //check if hero name is unique
-        if (service.getAllHeroes().stream().anyMatch(h ->
-                h.getName().equalsIgnoreCase(edited.getName()) &&
-                        hero.getId() != edited.getId())) {
-            FieldError error = new FieldError("hero", "name",
-                    "Hero name already exists.");
-            valResult.addError(error);
-        }
+        service.uniqueHeroNameCheck(edited.getName(), edited.getId(), valResult);
         if (valResult.hasErrors()) {
             mdl.addAttribute("hero", edited);
             mdl.addAttribute("validHero", hero);
             mdl.addAttribute("heroquirk", hero.getQuirk());
             mdl.addAttribute("quirks", service.getAllQuirks());
-            mdl.addAttribute("orgs", service.getOrgsForHero(hero));
+            mdl.addAttribute("orgs", service.getOrgsForHero(hero.getId()));
             mdl.addAttribute("allOrgs", service.getAllOrgs());
             mdl.addAttribute("sightings", service.getSightingsForHero(hero));
             return "herodetails";
         }
-        for (Org org : service.getOrgsForHero(hero)) {
-            //removes orgs if they are no longer selected
-            if (Arrays.stream(orgIds).anyMatch(id -> id != org.getId())) {
-                org.getHeroes().remove(edited);
-                service.updateOrg(org);
-            }
-        }
-        for (Integer orgId : orgIds) {
-            Org toUpdate = service.getOrgById(orgId);
-            //check if hero is added to org already (add new hero if not already a member)
-            if (toUpdate.getHeroes().stream().allMatch(h -> h.getId() != edited.getId())) {
-                toUpdate.getHeroes().add(edited);
-            }
-            service.updateOrg(toUpdate);
-        }
+        //removes or adds orgs if associated orgs were changed
+        service.updateOrgsForHero(edited, orgIds);
         service.updateHero(edited);
         return "redirect:/hero/" + edited.getId();
     }

@@ -5,23 +5,26 @@
  */
 package com.sg.superherosightings.daos;
 
-import com.sg.superherosightings.dtos.Hero;
 import com.sg.superherosightings.dtos.Org;
+
 import java.util.List;
 
 /**
- *
  * @author codedchai
  */
 public interface OrgDao {
-    
-    Org getOrgById(int id);
-    List<Org> getAllOrgs();
-    Org addOrg(Org org);
-    void updateOrg(Org org);
-    void deleteOrgById(int id);
-    
-    List<Org> getOrgsForHero(Hero hero);
 
-    
+    Org getOrgById(int id);
+
+    List<Org> getAllOrgs();
+
+    Org addOrg(Org org);
+
+    void updateOrg(Org org);
+
+    void deleteOrgById(int id);
+
+    List<Org> getOrgsForHero(int heroId);
+
+
 }

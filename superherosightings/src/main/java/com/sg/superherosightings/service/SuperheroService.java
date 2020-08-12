@@ -5,7 +5,10 @@ import com.sg.superherosightings.dtos.*;
 import com.sg.superherosightings.exceptions.NullHeroDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -54,8 +57,8 @@ public class SuperheroService {
         return sightDao.getSightingsForHero(hero);
     }
 
-    public List<Org> getOrgsForHero(Hero hero) {
-        return orgDao.getOrgsForHero(hero);
+    public List<Org> getOrgsForHero(int id) {
+        return orgDao.getOrgsForHero(id);
     }
 
 
@@ -77,5 +80,39 @@ public class SuperheroService {
 
     public void deleteHeroById(Integer id) {
         heroDao.deleteHeroById(id);
+    }
+
+    public void uniqueHeroNameCheck(String name, BindingResult valResult) {
+        if (getAllHeroes().stream().anyMatch(hero -> hero.getName().equalsIgnoreCase(name))) {
+            FieldError error = new FieldError("hero", "name",
+                    "Hero name already exists.");
+            valResult.addError(error);
+        }
+    }
+
+    public void uniqueHeroNameCheck(String name, int id, BindingResult valResult) {
+        if (getAllHeroes().stream().anyMatch(hero -> hero.getName().equalsIgnoreCase(name) && hero.getId() != id)) {
+            FieldError error = new FieldError("hero", "name",
+                    "Hero name already exists.");
+            valResult.addError(error);
+        }
+    }
+
+    public void updateOrgsForHero(Hero edited, Integer[] orgIds) {
+        for (Org org : getOrgsForHero(edited.getId())) {
+            //removes orgs if they are no longer selected
+            if (Arrays.stream(orgIds).anyMatch(id -> id != org.getId())) {
+                org.getHeroes().remove(edited);
+                updateOrg(org);
+            }
+        }
+        for (Integer orgId : orgIds) {
+            Org toUpdate = getOrgById(orgId);
+            //check if hero is added to org already (add new hero if not already a member)
+            if (toUpdate.getHeroes().stream().allMatch(h -> h.getId() != edited.getId())) {
+                toUpdate.getHeroes().add(edited);
+            }
+            updateOrg(toUpdate);
+        }
     }
 }
