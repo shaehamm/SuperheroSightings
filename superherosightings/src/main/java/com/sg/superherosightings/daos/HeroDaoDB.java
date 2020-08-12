@@ -14,9 +14,6 @@ import com.sg.superherosightings.exceptions.NullHeroDataException;
 import com.sg.superherosightings.exceptions.NullLocationDataException;
 import com.sg.superherosightings.exceptions.NullOrganizationDataException;
 import com.sg.superherosightings.exceptions.NullQuirkDataException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,8 +21,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
 /**
- *
  * @author codedchai
  */
 @Repository
@@ -40,7 +40,10 @@ public class HeroDaoDB implements HeroDao {
         final String SELECT_HERO_BY_ID = "SELECT * FROM Hero WHERE Id = ?";
         try {
             Hero toReturn = jdbc.queryForObject(SELECT_HERO_BY_ID, new HeroMapper(), id);
-            toReturn.setQuirk(getQuirkForHero(id));
+            final String SELECT_QUIRK_BY_ID = "SELECT * FROM Quirk WHERE Id = ?";
+            Quirk toAdd = jdbc.queryForObject(SELECT_QUIRK_BY_ID, new QuirkMapper(), toReturn.getQuirkId());
+            toReturn.setQuirk(toAdd);
+            //toReturn.setQuirk(getQuirkForHero(id));
             return toReturn;
         } catch (DataAccessException ex) {
             return null;
@@ -107,7 +110,7 @@ public class HeroDaoDB implements HeroDao {
         final String SELECT_HEROS_FOR_LOCATION = "SELECT Hero.* FROM Hero JOIN "
                 + "Sighting s ON Hero.Id = s.HeroId JOIN "
                 + "Location l ON s.LocationId = l.Id WHERE l.Id = ?";
-        List<Hero> toReturn = jdbc.query(SELECT_HEROS_FOR_LOCATION, new HeroMapper(), 
+        List<Hero> toReturn = jdbc.query(SELECT_HEROS_FOR_LOCATION, new HeroMapper(),
                 location.getId());
         associateQuirk(toReturn);
         return toReturn;
@@ -122,7 +125,7 @@ public class HeroDaoDB implements HeroDao {
         final String SELECT_HEROS_FOR_ORG = "SELECT Hero.* FROM Hero "
                 + "JOIN HeroOrg h ON Hero.Id = h.HeroId "
                 + "JOIN Org ON Org.Id = h.OrgId WHERE Org.Id = ?";
-        List<Hero> toReturn = jdbc.query(SELECT_HEROS_FOR_ORG, new HeroMapper(), 
+        List<Hero> toReturn = jdbc.query(SELECT_HEROS_FOR_ORG, new HeroMapper(),
                 org.getId());
         associateQuirk(toReturn);
         return toReturn;
@@ -134,8 +137,8 @@ public class HeroDaoDB implements HeroDao {
         return jdbc.queryForObject(SELECT_QUIRK_FOR_HERO, new QuirkMapper(), id);
     }
 
-    public void associateQuirk(List<Hero> heros) {
-        for (Hero hero: heros) {
+    public void associateQuirk(List<Hero> heroes) {
+        for (Hero hero : heroes) {
             hero.setQuirk(getQuirkForHero(hero.getId()));
         }
     }
@@ -159,6 +162,7 @@ public class HeroDaoDB implements HeroDao {
         public Hero mapRow(ResultSet rs, int index) throws SQLException {
             Hero hr = new Hero();
             hr.setId(rs.getInt("Id"));
+            hr.setQuirkId(rs.getInt("QuirkId"));
             hr.setName(rs.getString("Name"));
             hr.setAlignment(rs.getString("Alignment"));
             return hr;

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 
 /**
  * @author codedchai
@@ -83,16 +84,16 @@ public class HeroController {
     @PostMapping("edithero")
     public String editHero(@Valid Hero edited, BindingResult valResult, Integer[] orgIds, Model mdl) throws NullHeroDataException {
         edited.setQuirk(quirkDao.getQuirkById(edited.getQuirk().getId()));
+        Hero hero = heroDao.getHeroById(edited.getId());
         //check if hero name is unique
-        if (heroDao.getAllHeroes().stream().anyMatch(hero ->
-                hero.getName().equalsIgnoreCase(edited.getName()) &&
+        if (heroDao.getAllHeroes().stream().anyMatch(h ->
+                h.getName().equalsIgnoreCase(edited.getName()) &&
                         hero.getId() != edited.getId())) {
             FieldError error = new FieldError("hero", "name",
                     "Hero name already exists.");
             valResult.addError(error);
         }
         if (valResult.hasErrors()) {
-            Hero hero = heroDao.getHeroById(edited.getId());
             mdl.addAttribute("hero", edited);
             mdl.addAttribute("validHero", hero);
             mdl.addAttribute("heroquirk", hero.getQuirk());
@@ -102,10 +103,17 @@ public class HeroController {
             mdl.addAttribute("sightings", sightDao.getSightingsForHero(hero));
             return "herodetails";
         }
+        for (Org org : orgDao.getOrgsForHero(hero)) {
+            //removes orgs if they are no longer selected
+            if (Arrays.stream(orgIds).anyMatch(id -> id != org.getId())) {
+                org.getHeroes().remove(edited);
+                orgDao.updateOrg(org);
+            }
+        }
         for (Integer orgId : orgIds) {
             Org toUpdate = orgDao.getOrgById(orgId);
             //check if hero is added to org already (add new hero if not already a member)
-            if (toUpdate.getHeroes().stream().allMatch(hero -> hero.getId() != edited.getId())) {
+            if (toUpdate.getHeroes().stream().allMatch(h -> h.getId() != edited.getId())) {
                 toUpdate.getHeroes().add(edited);
             }
             orgDao.updateOrg(toUpdate);

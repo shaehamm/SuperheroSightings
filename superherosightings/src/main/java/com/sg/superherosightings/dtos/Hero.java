@@ -5,28 +5,29 @@
  */
 package com.sg.superherosightings.dtos;
 
-import java.util.Objects;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 /**
- *
  * @author codedchai
  */
 public class Hero {
-    
+
     private int id;
-    
+
+    private int quirkId;
+
     private Quirk quirk;
-    
+
     @NotBlank(message = "Hero name must not be empty.")
     @Size(max = 30, message = "Hero name must be less than 30 characters.")
     private String name;
-    
+
     @NotBlank(message = "Hero alignment must not be empty.")
     @Size(max = 15, message = "Hero alignment must be less than 15 characters.")
     private String alignment;
-    
+
     public int getId() {
         return id;
     }
@@ -57,6 +58,14 @@ public class Hero {
 
     public void setAlignment(String alignment) {
         this.alignment = alignment;
+    }
+
+    public int getQuirkId() {
+        return quirkId;
+    }
+
+    public void setQuirkId(int quirkId) {
+        this.quirkId = quirkId;
     }
 
     @Override
@@ -95,5 +104,5 @@ public class Hero {
         }
         return true;
     }
-    
+
 }
