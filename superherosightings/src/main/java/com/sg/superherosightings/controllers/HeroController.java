@@ -5,10 +5,10 @@
  */
 package com.sg.superherosightings.controllers;
 
-import com.sg.superherosightings.daos.*;
 import com.sg.superherosightings.dtos.Hero;
 import com.sg.superherosightings.dtos.Org;
 import com.sg.superherosightings.exceptions.NullHeroDataException;
+import com.sg.superherosightings.service.SuperheroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,65 +28,53 @@ import java.util.Arrays;
 public class HeroController {
 
     @Autowired
-    HeroDao heroDao;
-
-    @Autowired
-    LocationDao locationDao;
-
-    @Autowired
-    OrgDao orgDao;
-
-    @Autowired
-    QuirkDao quirkDao;
-
-    @Autowired
-    SightingDao sightDao;
+    SuperheroService service;
 
     @GetMapping("heroes")
     public String displayHeroes(Model mdl) {
         mdl.addAttribute("hero", new Hero());
-        mdl.addAttribute("heroes", heroDao.getAllHeroes());
-        mdl.addAttribute("quirks", quirkDao.getAllQuirks());
+        mdl.addAttribute("heroes", service.getAllHeroes());
+        mdl.addAttribute("quirks", service.getAllQuirks());
         return "heroes";
     }
 
     @PostMapping("addhero")
     public String addHero(@Valid Hero toAdd, BindingResult valResult, Model mdl) throws NullHeroDataException {
         //check if hero name is unique
-        if (heroDao.getAllHeroes().stream().anyMatch(hero -> hero.getName().equalsIgnoreCase(toAdd.getName()))) {
+        if (service.getAllHeroes().stream().anyMatch(hero -> hero.getName().equalsIgnoreCase(toAdd.getName()))) {
             FieldError error = new FieldError("hero", "name",
                     "Hero name already exists.");
             valResult.addError(error);
         }
         if (valResult.hasErrors()) {
             mdl.addAttribute("hero", toAdd);
-            mdl.addAttribute("heroes", heroDao.getAllHeroes());
-            mdl.addAttribute("quirks", quirkDao.getAllQuirks());
+            mdl.addAttribute("heroes", service.getAllHeroes());
+            mdl.addAttribute("quirks", service.getAllQuirks());
             return "heroes";
         }
-        heroDao.addHero(toAdd);
+        service.addHero(toAdd);
         return "redirect:/heroes";
     }
 
     @GetMapping("hero/{id}")
     public String getHeroById(Model mdl, @PathVariable Integer id) {
-        Hero hero = heroDao.getHeroById(id);
+        Hero hero = service.getHeroById(id);
         mdl.addAttribute("hero", new Hero());
         mdl.addAttribute("validHero", hero);
         mdl.addAttribute("heroquirk", hero.getQuirk());
-        mdl.addAttribute("quirks", quirkDao.getAllQuirks());
-        mdl.addAttribute("orgs", orgDao.getOrgsForHero(hero));
-        mdl.addAttribute("allOrgs", orgDao.getAllOrgs());
-        mdl.addAttribute("sightings", sightDao.getSightingsForHero(hero));
+        mdl.addAttribute("quirks", service.getAllQuirks());
+        mdl.addAttribute("orgs", service.getOrgsForHero(hero));
+        mdl.addAttribute("allOrgs", service.getAllOrgs());
+        mdl.addAttribute("sightings", service.getSightingsForHero(hero));
         return "herodetails";
     }
 
     @PostMapping("edithero")
     public String editHero(@Valid Hero edited, BindingResult valResult, Integer[] orgIds, Model mdl) throws NullHeroDataException {
-        edited.setQuirk(quirkDao.getQuirkById(edited.getQuirk().getId()));
-        Hero hero = heroDao.getHeroById(edited.getId());
+        edited.setQuirk(service.getQuirkById(edited.getQuirk().getId()));
+        Hero hero = service.getHeroById(edited.getId());
         //check if hero name is unique
-        if (heroDao.getAllHeroes().stream().anyMatch(h ->
+        if (service.getAllHeroes().stream().anyMatch(h ->
                 h.getName().equalsIgnoreCase(edited.getName()) &&
                         hero.getId() != edited.getId())) {
             FieldError error = new FieldError("hero", "name",
@@ -97,34 +85,34 @@ public class HeroController {
             mdl.addAttribute("hero", edited);
             mdl.addAttribute("validHero", hero);
             mdl.addAttribute("heroquirk", hero.getQuirk());
-            mdl.addAttribute("quirks", quirkDao.getAllQuirks());
-            mdl.addAttribute("orgs", orgDao.getOrgsForHero(hero));
-            mdl.addAttribute("allOrgs", orgDao.getAllOrgs());
-            mdl.addAttribute("sightings", sightDao.getSightingsForHero(hero));
+            mdl.addAttribute("quirks", service.getAllQuirks());
+            mdl.addAttribute("orgs", service.getOrgsForHero(hero));
+            mdl.addAttribute("allOrgs", service.getAllOrgs());
+            mdl.addAttribute("sightings", service.getSightingsForHero(hero));
             return "herodetails";
         }
-        for (Org org : orgDao.getOrgsForHero(hero)) {
+        for (Org org : service.getOrgsForHero(hero)) {
             //removes orgs if they are no longer selected
             if (Arrays.stream(orgIds).anyMatch(id -> id != org.getId())) {
                 org.getHeroes().remove(edited);
-                orgDao.updateOrg(org);
+                service.updateOrg(org);
             }
         }
         for (Integer orgId : orgIds) {
-            Org toUpdate = orgDao.getOrgById(orgId);
+            Org toUpdate = service.getOrgById(orgId);
             //check if hero is added to org already (add new hero if not already a member)
             if (toUpdate.getHeroes().stream().allMatch(h -> h.getId() != edited.getId())) {
                 toUpdate.getHeroes().add(edited);
             }
-            orgDao.updateOrg(toUpdate);
+            service.updateOrg(toUpdate);
         }
-        heroDao.updateHero(edited);
+        service.updateHero(edited);
         return "redirect:/hero/" + edited.getId();
     }
 
     @GetMapping("deletehero/{id}")
     public String deleteHero(@PathVariable Integer id) {
-        heroDao.deleteHeroById(id);
+        service.deleteHeroById(id);
         return "redirect:/heroes";
     }
 }
