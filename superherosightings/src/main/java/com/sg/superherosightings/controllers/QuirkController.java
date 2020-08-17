@@ -52,7 +52,7 @@ public class QuirkController {
         Quirk quirk = service.getQuirkById(id);
         mdl.addAttribute("quirk", new Quirk());
         mdl.addAttribute("validQuirk", quirk);
-        mdl.addAttribute("heroes", service.getHeroesForQuirk(quirk));
+        mdl.addAttribute("heroes", service.getHeroesForQuirk(id));
         return "quirkdetails";
     }
 
@@ -61,10 +61,9 @@ public class QuirkController {
         //check if quirk name is unique
         service.uniqueQuirkNameCheck(edited.getName(), edited.getId(), valResult);
         if (valResult.hasErrors()) {
-            Quirk quirk = service.getQuirkById(edited.getId());
             mdl.addAttribute("quirk", edited);
-            mdl.addAttribute("validQuirk", quirk);
-            mdl.addAttribute("heroes", service.getHeroesForQuirk(quirk));
+            mdl.addAttribute("validQuirk", service.getQuirkById(edited.getId()));
+            mdl.addAttribute("heroes", service.getHeroesForQuirk(edited.getId()));
             return "quirkdetails";
         }
         service.updateQuirk(edited);

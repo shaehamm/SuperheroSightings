@@ -36,23 +36,20 @@ public class LocationController {
 
     @PostMapping("addlocation")
     public String addLocation(@Valid Location toAdd, BindingResult valResult, Model mdl) throws NullLocationDataException {
-        //check if location name is unique
-        service.uniqueLocationNameCheck(toAdd.getName(), valResult);
         if (valResult.hasErrors()) {
             mdl.addAttribute("location", toAdd);
             mdl.addAttribute("locations", service.getAllLocations());
             return "locations";
         }
-        service.addLocation(toAdd);
+        service.addLocation(toAdd, valResult);
         return "redirect:/locations";
     }
 
     @GetMapping("location/{id}")
     public String getLocationById(Model mdl, @PathVariable Integer id) {
-        Location location = service.getLocationById(id);
         mdl.addAttribute("location", new Location());
-        mdl.addAttribute("validLocation", location);
-        mdl.addAttribute("sights", service.getSightingsByLocation(location));
+        mdl.addAttribute("validLocation", service.getLocationById(id));
+        mdl.addAttribute("sights", service.getSightingsByLocation(id));
         return "locationdetails";
     }
 
@@ -61,10 +58,9 @@ public class LocationController {
         //check if location name is unique
         service.uniqueLocationNameCheck(edited.getName(), edited.getId(), valResult);
         if (valResult.hasErrors()) {
-            Location location = service.getLocationById(edited.getId());
             mdl.addAttribute("location", edited);
-            mdl.addAttribute("validLocation", location);
-            mdl.addAttribute("sights", service.getSightingsByLocation(location));
+            mdl.addAttribute("validLocation", service.getLocationById(edited.getId()));
+            mdl.addAttribute("sights", service.getSightingsByLocation(edited.getId()));
             return "locationdetails";
         }
         service.updateLocation(edited);

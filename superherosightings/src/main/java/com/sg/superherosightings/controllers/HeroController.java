@@ -56,9 +56,9 @@ public class HeroController {
         mdl.addAttribute("validHero", hero);
         mdl.addAttribute("heroquirk", hero.getQuirk());
         mdl.addAttribute("quirks", service.getAllQuirks());
-        mdl.addAttribute("orgs", service.getOrgsForHero(hero.getId()));
+        mdl.addAttribute("orgs", service.getOrgsForHero(id));
         mdl.addAttribute("allOrgs", service.getAllOrgs());
-        mdl.addAttribute("sightings", service.getSightingsForHero(hero));
+        mdl.addAttribute("sightings", service.getSightingsForHero(id));
         return "herodetails";
     }
 
@@ -66,17 +66,16 @@ public class HeroController {
     public String editHero(@Valid Hero edited, BindingResult valResult, Integer[] orgIds, Model mdl) throws NullHeroDataException {
         //add completed quirk info to the edited hero
         edited.setQuirk(service.getQuirkById(edited.getQuirk().getId()));
-        Hero hero = service.getHeroById(edited.getId());
         //check if hero name is unique
         service.uniqueHeroNameCheck(edited.getName(), edited.getId(), valResult);
         if (valResult.hasErrors()) {
             mdl.addAttribute("hero", edited);
-            mdl.addAttribute("validHero", hero);
-            mdl.addAttribute("heroquirk", hero.getQuirk());
+            mdl.addAttribute("validHero", service.getHeroById(edited.getId()));
+            mdl.addAttribute("heroquirk", edited.getQuirk());
             mdl.addAttribute("quirks", service.getAllQuirks());
-            mdl.addAttribute("orgs", service.getOrgsForHero(hero.getId()));
+            mdl.addAttribute("orgs", service.getOrgsForHero(edited.getId()));
             mdl.addAttribute("allOrgs", service.getAllOrgs());
-            mdl.addAttribute("sightings", service.getSightingsForHero(hero));
+            mdl.addAttribute("sightings", service.getSightingsForHero(edited.getId()));
             return "herodetails";
         }
         //removes or adds orgs if associated orgs were changed

@@ -5,29 +5,21 @@
  */
 package com.sg.superherosightings.daos;
 
-import com.sg.superherosightings.dtos.Hero;
-import com.sg.superherosightings.dtos.Location;
-import com.sg.superherosightings.dtos.Org;
-import com.sg.superherosightings.dtos.Quirk;
-import com.sg.superherosightings.dtos.Sighting;
+import com.sg.superherosightings.dtos.*;
 import com.sg.superherosightings.exceptions.NullHeroDataException;
 import com.sg.superherosightings.exceptions.NullLocationDataException;
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.List;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
- *
  * @author codedchai
  */
 @ExtendWith(SpringExtension.class)
@@ -62,8 +54,8 @@ public class SightingDaoDBTest {
 
     @BeforeEach
     public void setUp() {
-        List<Hero> heros = heroDao.getAllHeroes();
-        for (Hero hero : heros) {
+        List<Hero> heroes = heroDao.getAllHeroes();
+        for (Hero hero : heroes) {
             heroDao.deleteHeroById(hero.getId());
         }
 
@@ -362,7 +354,7 @@ public class SightingDaoDBTest {
         sight3.setHero(hero);
         sight3.setLocation(location);
         sight3.setDate(LocalDate.of(2019, 11, 2));
-        sight3.setDescription("Was talking to noone.");
+        sight3.setDescription("Was talking to no one.");
         sight3 = sightDao.addSighting(sight3);
 
         List<Sighting> toCheck = sightDao.getLatestSightings(2);
@@ -415,7 +407,7 @@ public class SightingDaoDBTest {
         sight2.setDescription("Was talking to someone.");
         sight2 = sightDao.addSighting(sight2);
 
-        List<Sighting> toCheck = sightDao.getSightingsByLocation(location);
+        List<Sighting> toCheck = sightDao.getSightingsByLocation(location.getId());
         assertEquals(1, toCheck.size());
         assertTrue(toCheck.contains(sight));
     }
@@ -464,7 +456,7 @@ public class SightingDaoDBTest {
         sight2.setDescription("Was talking to someone.");
         sight2 = sightDao.addSighting(sight2);
 
-        List<Sighting> toCheck = sightDao.getSightingsForHero(hero);
+        List<Sighting> toCheck = sightDao.getSightingsForHero(hero.getId());
         assertEquals(2, toCheck.size());
         assertTrue(toCheck.contains(sight));
         assertTrue(toCheck.contains(sight2));

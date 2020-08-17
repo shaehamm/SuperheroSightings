@@ -7,13 +7,8 @@ package com.sg.superherosightings.daos;
 
 import com.sg.superherosightings.daos.QuirkDaoDB.QuirkMapper;
 import com.sg.superherosightings.dtos.Hero;
-import com.sg.superherosightings.dtos.Location;
-import com.sg.superherosightings.dtos.Org;
 import com.sg.superherosightings.dtos.Quirk;
 import com.sg.superherosightings.exceptions.NullHeroDataException;
-import com.sg.superherosightings.exceptions.NullLocationDataException;
-import com.sg.superherosightings.exceptions.NullOrganizationDataException;
-import com.sg.superherosightings.exceptions.NullQuirkDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -103,30 +98,22 @@ public class HeroDaoDB implements HeroDao {
 
     @Override
     @Transactional
-    public List<Hero> getHeroesForLocation(Location location) throws NullLocationDataException {
-        if (location == null) {
-            throw new NullLocationDataException("The Location data is invalid");
-        }
+    public List<Hero> getHeroesForLocation(int id) {
         final String SELECT_HEROS_FOR_LOCATION = "SELECT Hero.* FROM Hero JOIN "
                 + "Sighting s ON Hero.Id = s.HeroId JOIN "
                 + "Location l ON s.LocationId = l.Id WHERE l.Id = ?";
-        List<Hero> toReturn = jdbc.query(SELECT_HEROS_FOR_LOCATION, new HeroMapper(),
-                location.getId());
+        List<Hero> toReturn = jdbc.query(SELECT_HEROS_FOR_LOCATION, new HeroMapper(), id);
         associateQuirk(toReturn);
         return toReturn;
     }
 
     @Override
     @Transactional
-    public List<Hero> getHeroesForOrg(Org org) throws NullOrganizationDataException {
-        if (org == null) {
-            throw new NullOrganizationDataException("The Organization data is invalid");
-        }
+    public List<Hero> getHeroesForOrg(int id) {
         final String SELECT_HEROS_FOR_ORG = "SELECT Hero.* FROM Hero "
                 + "JOIN HeroOrg h ON Hero.Id = h.HeroId "
                 + "JOIN Org ON Org.Id = h.OrgId WHERE Org.Id = ?";
-        List<Hero> toReturn = jdbc.query(SELECT_HEROS_FOR_ORG, new HeroMapper(),
-                org.getId());
+        List<Hero> toReturn = jdbc.query(SELECT_HEROS_FOR_ORG, new HeroMapper(), id);
         associateQuirk(toReturn);
         return toReturn;
     }
@@ -145,13 +132,10 @@ public class HeroDaoDB implements HeroDao {
 
     @Override
     @Transactional
-    public List<Hero> getHeroesForQuirk(Quirk quirk) throws NullQuirkDataException {
-        if (quirk == null) {
-            throw new NullQuirkDataException("The Quirk data is invalid");
-        }
+    public List<Hero> getHeroesForQuirk(int id) {
         final String SELECT_HEROES_FOR_QUIRK = "SELECT Hero.* FROM Hero JOIN "
                 + "Quirk ON Hero.QuirkId = Quirk.Id WHERE Quirk.Id = ?";
-        List<Hero> toReturn = jdbc.query(SELECT_HEROES_FOR_QUIRK, new HeroMapper(), quirk.getId());
+        List<Hero> toReturn = jdbc.query(SELECT_HEROES_FOR_QUIRK, new HeroMapper(), id);
         associateQuirk(toReturn);
         return toReturn;
     }

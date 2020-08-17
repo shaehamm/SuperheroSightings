@@ -4,8 +4,6 @@ import com.sg.superherosightings.daos.*;
 import com.sg.superherosightings.dtos.*;
 import com.sg.superherosightings.exceptions.NullHeroDataException;
 import com.sg.superherosightings.exceptions.NullLocationDataException;
-import com.sg.superherosightings.exceptions.NullOrganizationDataException;
-import com.sg.superherosightings.exceptions.NullQuirkDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -33,7 +31,7 @@ public class SuperheroService {
     @Autowired
     SightingDao sightDao;
 
-    //hero dao
+    //Hero Dao
     public List<Hero> getAllHeroes() {
         return heroDao.getAllHeroes();
     }
@@ -54,21 +52,26 @@ public class SuperheroService {
         heroDao.deleteHeroById(id);
     }
 
-    public List<Hero> getHeroesForOrg(Org org) throws NullOrganizationDataException {
-        return heroDao.getHeroesForOrg(org);
+    public List<Hero> getHeroesForOrg(Integer id) {
+        return heroDao.getHeroesForOrg(id);
     }
 
-    public List<Hero> getHeroesForQuirk(Quirk quirk) throws NullQuirkDataException {
-        return heroDao.getHeroesForQuirk(quirk);
+    public List<Hero> getHeroesForQuirk(Integer id) {
+        return heroDao.getHeroesForQuirk(id);
     }
 
-    //location dao
+    //Location Dao
     public List<Location> getAllLocations() {
         return locationDao.getAllLocations();
     }
 
-    public void addLocation(Location toAdd) throws NullLocationDataException {
-        locationDao.addLocation(toAdd);
+    public void addLocation(Location toAdd, BindingResult valResult) throws NullLocationDataException {
+        boolean uniqueName = uniqueLocationNameCheck(toAdd.getName(), valResult);
+        boolean validLat = validLatitudeCheck(toAdd.getLatitude(), valResult);
+        boolean validLong = validLongitudeCheck(toAdd.getLongitude(), valResult);
+        if (validLat && validLong && uniqueName) {
+            locationDao.addLocation(toAdd);
+        }
     }
 
     public Location getLocationById(Integer id) {
@@ -83,7 +86,7 @@ public class SuperheroService {
         locationDao.deleteLocationById(id);
     }
 
-    //org dao
+    //Organization Dao
     public List<Org> getAllOrgs() {
         return orgDao.getAllOrgs();
     }
@@ -108,7 +111,7 @@ public class SuperheroService {
         orgDao.deleteOrgById(id);
     }
 
-    //quirk dao
+    //Quirk Dao
     public List<Quirk> getAllQuirks() {
         return quirkDao.getAllQuirks();
     }
@@ -129,7 +132,7 @@ public class SuperheroService {
         quirkDao.addQuirk(toAdd);
     }
 
-    //sighting dao
+    //Sighting Dao
     public List<Sighting> getAllSightings() {
         return sightDao.getAllSightings();
     }
@@ -150,19 +153,19 @@ public class SuperheroService {
         sightDao.deleteSightingById(id);
     }
 
-    public List<Sighting> getSightingsForHero(Hero hero) {
-        return sightDao.getSightingsForHero(hero);
+    public List<Sighting> getSightingsForHero(Integer id) {
+        return sightDao.getSightingsForHero(id);
     }
 
-    public List<Sighting> getSightingsByLocation(Location location) {
-        return sightDao.getSightingsByLocation(location);
+    public List<Sighting> getSightingsByLocation(Integer id) {
+        return sightDao.getSightingsByLocation(id);
     }
 
     public List<Sighting> getLatestSightings(int count) {
         return sightDao.getLatestSightings(count);
     }
 
-    //unique checks
+    //Unique Checks
     public void uniqueHeroNameCheck(String name, BindingResult valResult) {
         if (getAllHeroes().stream().anyMatch(hero -> hero.getName().equalsIgnoreCase(name))) {
             FieldError error = new FieldError("hero", "name",
@@ -179,12 +182,15 @@ public class SuperheroService {
         }
     }
 
-    public void uniqueLocationNameCheck(String name, BindingResult valResult) {
+    public boolean uniqueLocationNameCheck(String name, BindingResult valResult) {
+        boolean unique = true;
         if (getAllLocations().stream().anyMatch(location -> location.getName().equalsIgnoreCase(name))) {
             FieldError error = new FieldError("location", "name",
                     "Location already exists.");
             valResult.addError(error);
+            return !unique;
         }
+        return unique;
     }
 
     public void uniqueLocationNameCheck(String name, int id, BindingResult valResult) {
@@ -228,7 +234,7 @@ public class SuperheroService {
         }
     }
 
-    //update orgs from hero side
+    //Update orgs from hero side
     public void updateOrgsForHero(Hero edited, Integer[] orgIds) {
         for (Org org : getOrgsForHero(edited.getId())) {
             //removes orgs if they are no longer selected
@@ -247,7 +253,7 @@ public class SuperheroService {
         }
     }
 
-    //check if heroes are selected for an org
+    //Check if heroes are selected for an org
     public List<Hero> selectedHeroCheck(Integer[] heroIds, BindingResult valResult) {
         List<Hero> toReturn = new ArrayList<>();
         if (heroIds != null) {
@@ -260,6 +266,31 @@ public class SuperheroService {
             valResult.addError(error);
         }
         return toReturn;
+    }
+
+    //Check if latitude and longitude are valid
+    private boolean validLongitudeCheck(Double longitude, BindingResult valResult) {
+        boolean validLong = true;
+        if (longitude > 90 || longitude < -90 || longitude == null) {
+//            FieldError error = new FieldError("location", "longitude",
+//                    "Longitude must be between -180 and 180.");
+//            valResult.addError(error);
+            return !validLong;
+        } else {
+            return validLong;
+        }
+    }
+
+    private boolean validLatitudeCheck(Double latitude, BindingResult valResult) {
+        boolean validLat = true;
+        if (latitude > 90 || latitude < -90 || latitude == null) {
+//            FieldError error = new FieldError("location", "latitude",
+//                    "Latitude must be between -90 and 90.");
+//            valResult.addError(error);
+            return !validLat;
+        } else {
+            return validLat;
+        }
     }
 
 }

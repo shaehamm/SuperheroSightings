@@ -59,7 +59,7 @@ public class OrgController {
         Org org = service.getOrgById(id);
         mdl.addAttribute("org", new Org());
         mdl.addAttribute("validOrg", org);
-        mdl.addAttribute("orgheroes", service.getHeroesForOrg(org));
+        mdl.addAttribute("orgheroes", service.getHeroesForOrg(id));
         mdl.addAttribute("heroes", service.getAllHeroes());
         return "orgdetails";
     }
@@ -72,10 +72,9 @@ public class OrgController {
         //check if org name is unique
         service.uniqueOrgNameCheck(edited.getName(), edited.getId(), valResult);
         if (valResult.hasErrors()) {
-            Org org = service.getOrgById(edited.getId());
             mdl.addAttribute("org", edited);
-            mdl.addAttribute("validOrg", org);
-            mdl.addAttribute("orgheroes", service.getHeroesForOrg(org));
+            mdl.addAttribute("validOrg", service.getOrgById(edited.getId()));
+            mdl.addAttribute("orgheroes", service.getHeroesForOrg(edited.getId()));
             mdl.addAttribute("heroes", service.getAllHeroes());
             return "orgdetails";
         }

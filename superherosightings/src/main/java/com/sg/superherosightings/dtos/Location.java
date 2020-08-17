@@ -5,42 +5,37 @@
  */
 package com.sg.superherosightings.dtos;
 
+import javax.validation.constraints.*;
 import java.util.Objects;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 /**
- *
  * @author codedchai
  */
 public class Location {
 
     private int id;
-    
+
     @NotBlank(message = "Location name must not be empty.")
     @Size(max = 50, message = "Location name must be less than 50 characters.")
     private String name;
-    
+
     @NotBlank(message = "Location address must not be empty.")
     @Size(max = 50, message = "Location address must be less than 50 characters.")
     private String address;
-    
-    //@NotBlank(message = "Location latitude must not be empty.")
+
+    @NotNull(message = "Location latitude must not be empty.")
     @Min(value = -90, message = "Latitude must be between -90 and 90.")
     @Max(value = 90, message = "Latitude must be between -90 and 90.")
 //    @Digits(integer=2, fraction=6, message = "Location latitude must be no more than"
 //            + " 2 whole numbers and 6 fractions.")
-    private double latitude;
-    
-    //@NotBlank(message = "Location longitude must not be empty.")
+    private Double latitude;
+
+    @NotNull(message = "Location longitude must not be empty.")
     @Min(value = -180, message = "Longitude must be between -180 and 180.")
     @Max(value = 180, message = "Longitude must be between -180 and 180.")
 //    @Digits(integer=3, fraction=6, message = "Location longitude must be no more than"
 //            + " 3 whole numbers and 6 fractions.")
-    private double longitude;
+    private Double longitude;
 
     public int getId() {
         return id;
@@ -66,19 +61,19 @@ public class Location {
         this.address = address;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -123,6 +118,5 @@ public class Location {
         return true;
     }
 
-    
-    
+
 }

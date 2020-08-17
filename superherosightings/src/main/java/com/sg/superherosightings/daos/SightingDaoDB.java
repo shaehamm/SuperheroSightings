@@ -11,11 +11,6 @@ import com.sg.superherosightings.dtos.Hero;
 import com.sg.superherosightings.dtos.Location;
 import com.sg.superherosightings.dtos.Quirk;
 import com.sg.superherosightings.dtos.Sighting;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,8 +18,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- *
  * @author codedchai
  */
 @Repository
@@ -156,22 +156,20 @@ public class SightingDaoDB implements SightingDao {
 
     @Override
     @Transactional
-    public List<Sighting> getSightingsByLocation(Location location) {
+    public List<Sighting> getSightingsByLocation(int id) {
         final String SELECT_SIGHTINGS_BY_LOCATION = "SELECT s.* FROM Sighting s "
                 + "JOIN Location l On s.LocationId = l.Id WHERE l.Id = ?";
-        List<Sighting> toReturn = jdbc.query(SELECT_SIGHTINGS_BY_LOCATION,
-                new SightingMapper(), location.getId());
+        List<Sighting> toReturn = jdbc.query(SELECT_SIGHTINGS_BY_LOCATION, new SightingMapper(), id);
         associateHeroAndLocation(toReturn);
         return toReturn;
     }
 
     @Override
     @Transactional
-    public List<Sighting> getSightingsForHero(Hero hero) {
+    public List<Sighting> getSightingsForHero(int id) {
         final String SELECT_SIGHTINGS_FOR_HERO = "SELECT s.* FROM Sighting s "
                 + "JOIN Hero ON s.HeroId = Hero.Id WHERE Hero.Id = ?";
-        List<Sighting> toReturn = jdbc.query(SELECT_SIGHTINGS_FOR_HERO,
-                new SightingMapper(), hero.getId());
+        List<Sighting> toReturn = jdbc.query(SELECT_SIGHTINGS_FOR_HERO, new SightingMapper(), id);
         associateHeroAndLocation(toReturn);
         return toReturn;
     }
